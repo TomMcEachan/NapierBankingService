@@ -1,0 +1,17 @@
+﻿<Window x:Class="NapierBankingService.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:NapierBankingService"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <Button x:Name="Submit" Content="Submit" HorizontalAlignment="Center" Margin="0,348,0,0" VerticalAlignment="Top" Background="#FFD83737" Width="130" Click="Submit_Click" FontFamily="Arial" FontWeight="Bold" Cursor="Hand" Foreground="White" BorderBrush="#FFEC4D4D" FontSize="16"/>
+        <Label x:Name="AppLabel" Content="Napier Bank Message Filtering Service&#xD;&#xA;" HorizontalAlignment="Left" Margin="49,45,0,0" VerticalAlignment="Top" FontFamily="Arial" FontWeight="Bold" FontSize="20" Height="34"/>
+        <TextBox HorizontalAlignment="Left" Margin="195,131,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="192"/>
+        <Label Content="Select a message type&#xD;&#xA;" HorizontalAlignment="Left" Margin="49,96,0,0" VerticalAlignment="Top" Height="26"/>
+        <ComboBox HorizontalAlignment="Left" Margin="195,100,0,0" VerticalAlignment="Top" Width="192" IsDropDownOpen="True"/>
+        <Label Content="Input message header&#xD;&#xA;" HorizontalAlignment="Left" Margin="49,127,0,0" VerticalAlignment="Top" Height="26"/>
+    </Grid>
+</Window>
