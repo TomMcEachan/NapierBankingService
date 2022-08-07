@@ -35,7 +35,7 @@ namespace NapierBankingService
 
         }
 
-        private void CheckBox_Checked(object sender, RoutedEventArgs e)
+        private void headerMessageBox_TextChanged(object sender, TextChangedEventArgs e)
         {
 
         }
