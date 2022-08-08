@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace NapierBankingService.ApplicationLayer
+﻿namespace NapierBankingService.ApplicationLayer
 {
     public class Email : Message
     {
        
         private string messageSubject;
+        private string emailAddress;
 
         protected string MessageSubject { get => messageSubject; set => messageSubject = value; }
 
@@ -19,9 +14,15 @@ namespace NapierBankingService.ApplicationLayer
         }
 
 
+        public Email () {  }
+
+        public void QuaraintineURL()
+        {
+
+        }
 
 
-
+        
 
     }
 }
