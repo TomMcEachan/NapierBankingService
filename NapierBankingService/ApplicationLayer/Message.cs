@@ -17,6 +17,10 @@
             _characterLimit = characterLimit;
         }
 
+        public Message () { }
+
+
+
         public void QuaraintineURL()
         {
 

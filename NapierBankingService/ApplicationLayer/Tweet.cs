@@ -12,7 +12,7 @@
 
 
 
-        public Tweet(string messageHeader, string messageBody, char messageType, string sender, int characterLimit, Hashtag[] hashTags, TwitterID[] twitterIDs) : base(messageHeader, messageBody, messageType, sender, characterLimit)
+        public Tweet(string messageHeader, string messageBody, char messageType, string sender, int characterLimit, Hashtag[] hashTags, TwitterID[] twitterIDs)
         {
             _messageHeader = messageHeader;
             _messageBody = messageBody;
