@@ -7,11 +7,20 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <Button x:Name="Submit" Content="Submit" HorizontalAlignment="Center" Margin="0,348,0,0" VerticalAlignment="Top" Background="#FFD83737" Width="130" Click="Submit_Click" FontFamily="Arial" FontWeight="Bold" Cursor="Hand" Foreground="White" BorderBrush="#FFEC4D4D" FontSize="16"/>
-        <Label x:Name="AppLabel" Content="Napier Bank Message Filtering Service&#xD;&#xA;" HorizontalAlignment="Left" Margin="49,45,0,0" VerticalAlignment="Top" FontFamily="Arial" FontWeight="Bold" FontSize="20" Height="34"/>
-        <TextBox HorizontalAlignment="Left" Margin="195,131,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="192"/>
+        <Button x:Name="Submit" Content="Submit" HorizontalAlignment="Left" Margin="195,357,0,0" VerticalAlignment="Top" Background="#FFE6223F" Width="130" Click="Submit_Click" FontFamily="Arial" FontWeight="Bold" Cursor="Hand" Foreground="White" BorderBrush="#FFAF2337" FontSize="16"/>
+        <Label x:Name="AppLabel" Content="Napier Bank Message Filtering Service&#xD;&#xA;" HorizontalAlignment="Left" Margin="49,32,0,0" VerticalAlignment="Top" FontFamily="Arial" FontWeight="Bold" FontSize="25" Height="39"/>
+        <TextBox x:Name="headerMessageBox" HorizontalAlignment="Left" Margin="195,136,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="269" Height="22" TextChanged="headerMessageBox_TextChanged"/>
         <Label Content="Select a message type&#xD;&#xA;" HorizontalAlignment="Left" Margin="49,96,0,0" VerticalAlignment="Top" Height="26"/>
-        <ComboBox HorizontalAlignment="Left" Margin="195,100,0,0" VerticalAlignment="Top" Width="192" IsDropDownOpen="True"/>
-        <Label Content="Input message header&#xD;&#xA;" HorizontalAlignment="Left" Margin="49,127,0,0" VerticalAlignment="Top" Height="26"/>
+        <ComboBox x:Name="messageTypeBox" HorizontalAlignment="Left" Margin="195,100,0,0" VerticalAlignment="Top" Width="269">
+            <ListBoxItem Content="E" IsEnabled="False"/>
+            <ListBoxItem Content="T"/>
+            <ListBoxItem Content="S"/>
+        </ComboBox>
+        <Label Content="Input message header&#xD;&#xA;" HorizontalAlignment="Left" Margin="49,131,0,0" VerticalAlignment="Top" Height="29"/>
+        <Image x:Name="logoImage" HorizontalAlignment="Left" Height="293" Margin="485,0,0,0" VerticalAlignment="Center" Width="293" Source="/Assets/Logo.png"/>
+        <TextBox x:Name="messageTextBox" HorizontalAlignment="Left" Margin="195,217,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="269" Height="124" ToolTip=""/>
+        <Label x:Name="messageTextLabel" Content="Input message text" HorizontalAlignment="Left" Margin="49,217,0,0" VerticalAlignment="Top" Width="127"/>
+        <TextBox x:Name="senderTextBox" HorizontalAlignment="Left" Margin="195,174,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="269" Height="22"/>
+        <Label Content="Input sender&#xD;&#xA;" HorizontalAlignment="Left" Margin="49,174,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.125,-0.455" Height="28"/>
     </Grid>
 </Window>

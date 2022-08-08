@@ -7,4 +7,18 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="Assets\Logo.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Assets\Logo.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="DataLayer\" />
+  </ItemGroup>
+
 </Project>
