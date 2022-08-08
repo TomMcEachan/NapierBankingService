@@ -8,23 +8,20 @@ namespace NapierBankingService.ApplicationLayer
 {
     public class Email : Message
     {
-        protected string _messageHeader;
-        protected string _messageBody;
-        protected char _messageType;
-        protected string _sender;
-        protected int _characterLimit;
-        protected int _messageSubject;
+       
+        private string messageSubject;
 
+        protected string MessageSubject { get => messageSubject; set => messageSubject = value; }
 
-
-        public Email(string messageHeader, string messageBody, string messageSubject, char messageType, string sender, int characterLimit) 
-        {
-            _messageHeader = messageHeader;
-            _messageBody = messageBody;
-            _messageType = messageType;
-            _sender = sender;
-            _characterLimit = characterLimit;
+        public Email(string messageHeader, string messageBody, char messageType, string sender, int characterLimit, string messageSubject) : base(messageHeader, messageBody, messageType, sender, characterLimit)
+        {  
+            MessageSubject = messageSubject;
         }
+
+
+
+
+
 
     }
 }
