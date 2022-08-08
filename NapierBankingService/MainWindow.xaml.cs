@@ -37,7 +37,6 @@ namespace NapierBankingService
                 headerMessageBox.Clear();
             }
             
-
             app.ProcessSubmission(Header, Body);   
         }
 

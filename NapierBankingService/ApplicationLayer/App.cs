@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -10,27 +11,30 @@ namespace NapierBankingService.ApplicationLayer
 {
     internal class App
     {
-        Dictionary<string, int> HashtagDict;
-        List<string> Mentions;
-        List<string> MessageList;
-        List<SignificantIncident> SIRList;
-        List<string> QuarantineList;
-        Dictionary<string, string> Abbreviations;
+        private Dictionary<string, int> HashtagDict;
+        private List<string> Mentions;
+        private List<string> MessageList;
+        private List<SignificantIncident> SIRList;
+        private List<string> QuarantineList = new List<string>();
+        private Dictionary<string, string> Abbreviations;
+        private string URL;
 
-        string headerText;
-        string bodyText;
-        char type;
+        private string headerText;
+        private string bodyText;
+        private char type;
+        private string emailAddress;
+        private string dateString;
 
-        int TWITTER_LIMIT = 140;
-        int EMAIL_LIMIT = 1028;
-        int SMS_LIMIT = 140;
+        private int TWITTER_LIMIT = 140;
+        private int EMAIL_LIMIT = 1028;
+        private int SMS_LIMIT = 140;
 
 
         public void ProcessSubmission(string header, string body)
         {
             
             type = ProcessHeader(header);
-            ProcessBody(body, type);
+            ProcessBody(body, header, type);
            
         }
 
@@ -39,29 +43,8 @@ namespace NapierBankingService.ApplicationLayer
         {
             headerText = header;
             type = DetectType(header);
-
-            switch(type)
-            {
-                case 'S':
-                    Trace.WriteLine("SMS");
-                    break;
-                case 'T':
-                    Trace.WriteLine("Tweet");
-                    break;
-                case 'E':
-                    Trace.WriteLine("Email");
-                    break;
-            }
-
             return type;
         }
-
-
-
-
-
-
-
 
 
         public bool HeaderValid (string header)
@@ -118,29 +101,83 @@ namespace NapierBankingService.ApplicationLayer
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
         /* Methods for Processing the Body Text */
 
-        public void ProcessBody(string body, char type)
+        public void ProcessBody(string body, string header, char type)
         {
-            
-            
+            string email;
+            string date;
+            List<string> urlList;
 
+            switch (type)
+            {
+                case 'S':
+                    break;
+                case 'T':
+                    break;
+                case 'E':
+                   
+                    email = DetectEmailAddress(body);
+                    date = DetectDate(body);
+                    urlList = DetectURL(body);
+
+                  
+                    Debug.WriteLine(urlList.ToString());
+                    
+
+                    break;
+            }
         }
 
 
-        
+
+        public string DetectDate(string body)
+        {
+            Regex rx = new Regex("(SIR)\\s*([0-2][1-9]|3[0-1])\\/(0[1-9]|1[0-2])\\/([0-9][0-9])");
+
+            MatchCollection matches = rx.Matches(body);
+
+            foreach (Match match in matches)
+            {
+                dateString = match.Value;
+            }
+
+            return dateString;
+        }
+
+
+        public string DetectEmailAddress(string body)
+        {
+            Regex rx = new Regex("[a-zA-Z0-9.()]{1,}@[a-zA-Z0-9()]{1,}.[a-zA-Z.(_)]{1,}");
+
+            MatchCollection matches = rx.Matches(body);
+
+            foreach (Match match in matches)
+            {
+                emailAddress = match.Value;
+            }
+
+            return emailAddress;
+        }
+
+
+        public List<string> DetectURL (string body)
+        {
+            string url;
+            Regex rx = new Regex(@"((http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?)");
+
+            MatchCollection matches = rx.Matches(body);
+
+            foreach (Match match in matches)
+            {
+                url = match.Value;
+                QuarantineList.Add(url);
+            }
+
+            return QuarantineList;
+        }
+
+
 
 
     }

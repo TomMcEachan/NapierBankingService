@@ -23,6 +23,8 @@
             CharacterLimit = characterLimit;
         }
 
+        public Message () { }
+
         public void ExpandTextSpeak()
         {
 
