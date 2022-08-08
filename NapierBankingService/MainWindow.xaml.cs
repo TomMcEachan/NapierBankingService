@@ -1,17 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace NapierBankingService
 {
@@ -20,24 +10,37 @@ namespace NapierBankingService
     /// </summary>
     public partial class MainWindow : Window
     {
+        ApplicationLayer.App app;
+        private string header;
+        private string body;
+
+        public string Header { get => header; set => header = value; }
+        public string Body { get => body; set => body = value; }
+
         public MainWindow()
         {
             InitializeComponent();
+            app = new ApplicationLayer.App();
         }
-
-        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
-        }
+        
+       
 
         private void Submit_Click(object sender, RoutedEventArgs e)
         {
+            Header = headerMessageBox.Text;
+            Body = messageBody.Text;
 
+            bool headerValid = app.HeaderValid(Header);
+
+            if (!headerValid)
+            {
+                headerMessageBox.Clear();
+            }
+            
+            app.ProcessSubmission(Header, Body);   
         }
 
-        private void headerMessageBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
-        }
+        
+        
     }
 }

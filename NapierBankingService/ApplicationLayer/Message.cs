@@ -2,38 +2,32 @@
 {
     public class Message
     {
-        protected string _messageHeader;
-        protected string _messageBody;
-        protected char _messageType;
-        protected string _sender;
-        protected int _characterLimit;
+        private string _messageHeader;
+        private string _messageBody;
+        private char _messageType;
+        private string _sender;
+        private int _characterLimit;
+
+        public string MessageHeader { get => _messageHeader; set => _messageHeader = value; }
+        public string MessageBody { get => _messageBody; set => _messageBody = value; }
+        public char MessageType { get => _messageType; set => _messageType = value; }
+        public string Sender { get => _sender; set => _sender = value; }
+        public int CharacterLimit { get => _characterLimit; set => _characterLimit = value; }
 
         public Message(string messageHeader, string messageBody, char messageType, string sender, int characterLimit)
         {
-            _messageHeader = messageHeader;
-            _messageBody = messageBody;
-            _messageType = messageType;
-            _sender = sender;
-            _characterLimit = characterLimit;
+            MessageHeader = messageHeader;
+            MessageBody = messageBody;
+            MessageType = messageType;
+            Sender = sender;
+            CharacterLimit = characterLimit;
         }
 
         public Message () { }
 
-
-
-        public void QuaraintineURL()
+        public void ExpandTextSpeak()
         {
 
-        }
-
-        public void ProcessMessage()
-        {
-
-        }
-
-
-
-
-
+        }    
     }
 }
