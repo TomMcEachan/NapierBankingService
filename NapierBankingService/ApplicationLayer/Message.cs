@@ -23,20 +23,9 @@
             CharacterLimit = characterLimit;
         }
 
-       
-        public void QuaraintineURL()
+        public void ExpandTextSpeak()
         {
 
-        }
-
-        public void ProcessMessage()
-        {
-
-        }
-
-
-
-
-
+        }    
     }
 }

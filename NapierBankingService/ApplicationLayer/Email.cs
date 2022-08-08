@@ -19,9 +19,10 @@ namespace NapierBankingService.ApplicationLayer
         }
 
 
+        public void QuaraintineURL()
+        {
 
-
-
+        }
 
     }
 }
