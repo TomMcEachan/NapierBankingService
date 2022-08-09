@@ -11,7 +11,8 @@ namespace NapierBankingService.ApplicationLayer
         private string messageSubject;
         private string dateString;
         private string emailAddress;
-        
+        private string incidentMatch;
+
         protected string MessageSubject { get => messageSubject; set => messageSubject = value; }
 
 
@@ -28,17 +29,17 @@ namespace NapierBankingService.ApplicationLayer
         /* Email Specific Methods Needed to Create the Object */
 
         /// <summary>
-        /// This method takes the body inputed by the user and returns the date detected
+        /// This method takes the subject added by the user and returns the date detected
         /// </summary>
         /// <param name="body"></param>
         /// <returns>
         /// Date detected
         /// </returns>
-        public string DetectDate(string body)
+        public string DetectDate(string subject)
         {
             Regex rx = new Regex("(SIR)\\s*([0-2][1-9]|3[0-1])\\/(0[1-9]|1[0-2])\\/([0-9][0-9])");
 
-            MatchCollection matches = rx.Matches(body);
+            MatchCollection matches = rx.Matches(subject);
 
             foreach (Match match in matches)
             {
@@ -49,7 +50,7 @@ namespace NapierBankingService.ApplicationLayer
         }
 
         /// <summary>
-        /// This method takes the body inputed by the user and returns the email address detected
+        /// This method takes the body added by the user and returns the email address detected
         /// </summary>
         /// <param name="body"></param>
         /// <returns>
@@ -70,7 +71,7 @@ namespace NapierBankingService.ApplicationLayer
         }
 
         /// <summary>
-        /// This method takes the body inputed by the user and returns a list of the URLs detected
+        /// This method takes the body added by the user and returns a list of the URLs detected
         /// </summary>
         /// <param name="body"></param>
         /// <returns>
@@ -90,7 +91,7 @@ namespace NapierBankingService.ApplicationLayer
         }
 
         /// <summary>
-        /// This method takes the body inputed by the user, and a list of URLs to be quarantined and removes the URLs from the body
+        /// This method takes the body added by the user, and a list of URLs to be quarantined and removes the URLs from the body
         /// </summary>
         /// <param name="body"></param>
         /// <param name="QuarantineList"></param>
@@ -108,5 +109,22 @@ namespace NapierBankingService.ApplicationLayer
 
             return body;
         }
+
+
+        public bool DetectIncidentType(string subject)
+        {
+            if (subject.Contains("SIR"))
+            {
+                Debug.WriteLine("Incident Detected");
+                return true;
+            }
+
+            else
+            {
+                return false;
+            }
+        }
+
+        
     }
 }

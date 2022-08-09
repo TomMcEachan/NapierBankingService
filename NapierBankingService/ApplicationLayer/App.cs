@@ -15,30 +15,39 @@ namespace NapierBankingService.ApplicationLayer
         private List<string> Mentions;
         private List<string> MessageList;
         private List<SignificantIncident> SIRList;
-        private List<string> QuarantineList = new List<string>();
         private Dictionary<string, string> Abbreviations;
-        private string URL;
+        
 
         private string headerText;
         private string bodyText;
         private char type;
-        private string emailAddress;
-        private string dateString;
+        
 
         private int TWITTER_LIMIT = 140;
         private int EMAIL_LIMIT = 1028;
         private int SMS_LIMIT = 140;
 
 
-        public void ProcessSubmission(string header, string body)
+        public void ProcessSubmission(string header, string body, string subject)
         {
-            
+
             type = ProcessHeader(header);
-            ProcessBody(body, header, type);
+            
+            ProcessMessage(body, header, subject, type);
            
         }
 
+     
         /* Methods for Processing the Header Information */
+
+
+        /// <summary>
+        /// This method processes the header information and returns the correct type
+        /// </summary>
+        /// <param name="header"></param>
+        /// <returns>
+        /// A char signifying the type of message recieved 
+        /// </returns>
         public char ProcessHeader(string header)
         {
             headerText = header;
@@ -46,7 +55,11 @@ namespace NapierBankingService.ApplicationLayer
             return type;
         }
 
-
+        /// <summary>
+        /// This method checks whether or not the user input is valid
+        /// </summary>
+        /// <param name="header"></param>
+        /// <returns></returns>
         public bool HeaderValid (string header)
         {
             bool valid = true;
@@ -79,6 +92,14 @@ namespace NapierBankingService.ApplicationLayer
         }
 
 
+        
+        /// <summary>
+        /// This method detects the type of message
+        /// </summary>
+        /// <param name="headerText"></param>
+        /// <returns>
+        /// A char signifying the type of message recieved
+        /// </returns>
         public char DetectType(string headerText)
         {
             if (headerText.Contains("S"))
@@ -101,9 +122,16 @@ namespace NapierBankingService.ApplicationLayer
 
 
 
-        /* Methods for Processing the Body Text */
+        /* Methods for Processing Messages */
 
-        public string ProcessBody(string body, string header, char type)
+        /// <summary>
+        /// This method processes a message based on the specification of its type
+        /// </summary>
+        /// <param name="body"></param>
+        /// <param name="header"></param>
+        /// <param name="subject"></param>
+        /// <param name="type"></param>
+        public void ProcessMessage(string body, string header, string subject, char type)
         {
             switch (type)
             {
@@ -112,18 +140,43 @@ namespace NapierBankingService.ApplicationLayer
                 case 'T':
                     break;
                 case 'E':
-                    Email e = new Email();
-                    emailAddress = e.DetectEmailAddress(body);
-                    dateString = e.DetectDate(body);
-                    QuarantineList = e.DetectURL(body);
-                    body = e.QuarantineURL(body, QuarantineList);
+                    ProcessEmail(body, subject);                  
                     break;
-            }
-
-            return body;
+            }      
         }
 
 
+        /// <summary>
+        /// This method works through the steps to collect the necessary information about an email 
+        /// </summary>
+        /// <param name="body"></param>
+        /// <param name="subject"></param>
+        public void ProcessEmail(string body, string subject)
+        {
+                    /*Local Variables */
+                    string emailAddress;
+                    string dateString;
+                    bool incidentDetected;
+                    List<string> QuarantineList = new List<string>();
+
+                    /* New Instance of Empty Email object*/
+                    Email e = new Email();
+
+                    emailAddress = e.DetectEmailAddress(body); //detects the email address from the body
+                    dateString = e.DetectDate(subject); //detects the date from the subject line
+                    incidentDetected = e.DetectIncidentType(subject); //detects whether or not the email is a significant incident (true or false)
+
+                    /* Creates new Instance of Significant Incident if Detected */
+                    if (incidentDetected)
+                    {
+                        SignificantIncident sig = new SignificantIncident();
+                        sig.DetectIncidentType(subject);
+                        sig.DetectSortCode(subject);
+                    }
+
+                    QuarantineList = e.DetectURL(body);
+                    body = e.QuarantineURL(body, QuarantineList);
+        }
 
       
 

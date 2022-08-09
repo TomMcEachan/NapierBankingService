@@ -11,13 +11,15 @@
             <RowDefinition Height="0*"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <Button x:Name="Submit" Content="Submit" HorizontalAlignment="Left" Margin="195,294,0,0" VerticalAlignment="Top" Background="#FFE6223F" Width="130" Click="Submit_Click" FontFamily="Arial" FontWeight="Bold" Cursor="Hand" Foreground="White" BorderBrush="#FFAF2337" FontSize="16" Grid.RowSpan="2"/>
+        <Button x:Name="Submit" Content="Submit" HorizontalAlignment="Left" Margin="195,370,0,0" VerticalAlignment="Top" Background="#FFE6223F" Width="130" Click="Submit_Click" FontFamily="Arial" FontWeight="Bold" Cursor="Hand" Foreground="White" BorderBrush="#FFAF2337" FontSize="16" Grid.RowSpan="2"/>
         <Label x:Name="AppLabel" Content="Napier Bank Message Filtering Service&#xD;&#xA;" HorizontalAlignment="Left" Margin="49,32,0,0" VerticalAlignment="Top" FontFamily="Arial" FontWeight="Bold" FontSize="25" Height="39" Grid.RowSpan="2"/>
-        <TextBox x:Name="headerMessageBox" HorizontalAlignment="Left" Margin="195,108,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="269" Height="22" Grid.RowSpan="2" />
+        <TextBox x:Name="headerMessageBox" HorizontalAlignment="Left" Margin="195,108,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="365" Height="22" Grid.RowSpan="2" TextChanged="headerMessageBox_TextChanged" />
         <Label Content="Input message header&#xD;&#xA;" HorizontalAlignment="Left" Margin="49,103,0,0" VerticalAlignment="Top" Height="29" Grid.RowSpan="2"/>
-        <Image x:Name="logoImage" HorizontalAlignment="Left" Height="293" Margin="485,0,0,0" VerticalAlignment="Center" Width="293" Source="/Assets/Logo.png" Grid.Row="1"/>
-        <TextBox x:Name="messageBody" HorizontalAlignment="Left" Margin="195,154,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="269" Height="124" ToolTip="" Grid.RowSpan="2"/>
-        <Label x:Name="messageTextLabel" Content="Input message body&#xD;&#xA;" HorizontalAlignment="Left" Margin="49,154,0,0" VerticalAlignment="Top" Width="127" Grid.RowSpan="2"/>
+        <Image x:Name="logoImage" HorizontalAlignment="Left" Height="212" Margin="565,0,0,0" VerticalAlignment="Center" Width="213" Source="/Assets/Logo.png" Grid.Row="1"/>
+        <TextBox x:Name="messageBody" HorizontalAlignment="Left" Margin="195,154,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="365" Height="169" ToolTip="" Grid.RowSpan="2" AcceptsReturn="True" AcceptsTab="True" VerticalScrollBarVisibility="Auto" TextChanged="messageBody_TextChanged"/>
+        <Label x:Name="messageTextLabel" Content="Input message body&#xD;&#xA;" HorizontalAlignment="Left" Margin="49,154,0,0" VerticalAlignment="Top" Width="119" Grid.Row="1" Height="32"/>
         <Label Content="" HorizontalAlignment="Left" Margin="49,146,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.125,-0.455" Height="28" Grid.RowSpan="2"/>
+        <TextBox x:Name="subjectLine" HorizontalAlignment="Left" Margin="195,146,0,0" Grid.RowSpan="2" TextWrapping="Wrap" VerticalAlignment="Top" Width="365" Height="24" Visibility="Hidden"/>
+        <Label x:Name="subjectLabel" Content="Input subject line" HorizontalAlignment="Left" Margin="52,145,0,0" Grid.RowSpan="2" VerticalAlignment="Top" Width="124" ScrollViewer.VerticalScrollBarVisibility="Visible" Visibility="Hidden"/>
     </Grid>
 </Window>
