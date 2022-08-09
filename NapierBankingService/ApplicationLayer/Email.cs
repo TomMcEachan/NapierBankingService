@@ -11,13 +11,13 @@ namespace NapierBankingService.ApplicationLayer
         private string messageSubject;
         private string dateString;
         private string emailAddress;
-        private string incidentMatch;
+        
 
         protected string MessageSubject { get => messageSubject; set => messageSubject = value; }
 
 
         /* Email Constructor */
-        public Email(string messageHeader, string messageBody, char messageType, string sender, int characterLimit, string messageSubject) : base(messageHeader, messageBody, messageType, sender, characterLimit)
+        public Email(string messageHeader, string messageBody, char messageType, string sender,  string messageSubject, string date) : base(messageHeader, messageBody, messageType, sender)
         {  
             MessageSubject = messageSubject;
         }
@@ -81,7 +81,7 @@ namespace NapierBankingService.ApplicationLayer
         {
             List<string> list;
 
-            Regex rx = new Regex(@"((http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?)");
+            Regex rx = new Regex(@"((http|ftp|https|HTTPS|HTTP|FTP):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?)");
 
             MatchCollection matches = rx.Matches(body);
 
@@ -105,17 +105,14 @@ namespace NapierBankingService.ApplicationLayer
               body = body.Replace(URL, "<URL Quarantined>");
             }
             
-            Debug.WriteLine(body);
-
             return body;
         }
 
 
-        public bool DetectIncidentType(string subject)
+        public bool DetectIncident(string subject)
         {
             if (subject.Contains("SIR"))
             {
-                Debug.WriteLine("Incident Detected");
                 return true;
             }
 

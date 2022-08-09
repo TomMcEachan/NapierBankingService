@@ -14,13 +14,12 @@
         public string Sender { get => _sender; set => _sender = value; }
         public int CharacterLimit { get => _characterLimit; set => _characterLimit = value; }
 
-        public Message(string messageHeader, string messageBody, char messageType, string sender, int characterLimit)
+        public Message(string messageHeader, string messageBody, char messageType, string sender)
         {
             MessageHeader = messageHeader;
             MessageBody = messageBody;
             MessageType = messageType;
             Sender = sender;
-            CharacterLimit = characterLimit;
         }
 
         public Message () { }

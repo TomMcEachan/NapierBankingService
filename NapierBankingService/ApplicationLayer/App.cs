@@ -18,15 +18,16 @@ namespace NapierBankingService.ApplicationLayer
         private Dictionary<string, string> Abbreviations;
         
 
-        private string headerText;
-        private string bodyText;
         private char type;
         
 
-        private int TWITTER_LIMIT = 140;
-        private int EMAIL_LIMIT = 1028;
-        private int SMS_LIMIT = 140;
+        private int smsTwitterLimit = 140;
+        private int emailLimit = 1028;
+        
 
+        
+        public int EmailLimit { get => emailLimit; set => emailLimit = value; }
+        public int SmsTwitterLimit { get => smsTwitterLimit; set => smsTwitterLimit = value; }
 
         public void ProcessSubmission(string header, string body, string subject)
         {
@@ -40,7 +41,6 @@ namespace NapierBankingService.ApplicationLayer
      
         /* Methods for Processing the Header Information */
 
-
         /// <summary>
         /// This method processes the header information and returns the correct type
         /// </summary>
@@ -50,7 +50,7 @@ namespace NapierBankingService.ApplicationLayer
         /// </returns>
         public char ProcessHeader(string header)
         {
-            headerText = header;
+            string headerText = header;
             type = DetectType(header);
             return type;
         }
@@ -140,7 +140,8 @@ namespace NapierBankingService.ApplicationLayer
                 case 'T':
                     break;
                 case 'E':
-                    ProcessEmail(body, subject);                  
+                    object mail = ProcessEmail(body, subject, header, type);
+                    Debug.WriteLine(mail.ToString());
                     break;
             }      
         }
@@ -151,37 +152,47 @@ namespace NapierBankingService.ApplicationLayer
         /// </summary>
         /// <param name="body"></param>
         /// <param name="subject"></param>
-        public void ProcessEmail(string body, string subject)
+        public object ProcessEmail(string body, string subject, string header, char type)
         {
-                    /*Local Variables */
-                    string emailAddress;
-                    string dateString;
-                    bool incidentDetected;
-                    List<string> QuarantineList = new List<string>();
+             /*Local Variables */
+             string emailAddress;
+             string dateString;
+             bool incidentDetected;
+             string incidentType;
+             string sortCode;  
+             List<string> QuarantineList = new List<string>();
 
-                    /* New Instance of Empty Email object*/
-                    Email e = new Email();
+             /* New Instance of Empty Email object*/
+             Email e = new Email();
 
-                    emailAddress = e.DetectEmailAddress(body); //detects the email address from the body
-                    dateString = e.DetectDate(subject); //detects the date from the subject line
-                    incidentDetected = e.DetectIncidentType(subject); //detects whether or not the email is a significant incident (true or false)
+             emailAddress = e.DetectEmailAddress(body); //detects the email address from the body
+             dateString = e.DetectDate(subject); //detects the date from the subject line
+             incidentDetected = e.DetectIncident(subject); //detects whether or not the email is a significant incident (true or false)
+             QuarantineList = e.DetectURL(body);
+             body = e.QuarantineURL(body, QuarantineList);
 
-                    /* Creates new Instance of Significant Incident if Detected */
-                    if (incidentDetected)
-                    {
-                        SignificantIncident sig = new SignificantIncident();
-                        sig.DetectIncidentType(subject);
-                        sig.DetectSortCode(subject);
-                    }
+            /* Creates new Instance of Significant Incident if Detected */
+            if (incidentDetected)
+            {
+                SignificantIncident sig = new SignificantIncident();
+                incidentType = sig.DetectIncidentType(subject);
+                sortCode = sig.DetectSortCode(subject);
+                SignificantIncident newMessage = new SignificantIncident(sortCode, incidentType, header, body, type, emailAddress, subject, dateString);
+                return newMessage;
+            }
 
-                    QuarantineList = e.DetectURL(body);
-                    body = e.QuarantineURL(body, QuarantineList);
+            else if (!incidentDetected)
+            {
+                Email email = new Email(header, body, type, emailAddress, subject, dateString);
+                return email;
+            }
+
+            else
+            {
+                return null;
+            }
         }
 
-      
-
-
-       
-
+    
     }
 }

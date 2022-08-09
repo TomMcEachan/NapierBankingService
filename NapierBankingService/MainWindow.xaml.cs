@@ -52,6 +52,7 @@ namespace NapierBankingService
         {
             if (headerMessageBox.Text.Contains("E"))
             {
+                messageBody.MaxLength = app.EmailLimit;
                 subjectLine.Visibility = Visibility.Visible;
                 subjectLabel.Visibility = Visibility.Visible;
                 messageBody.Margin = new Thickness(195, 185, 0, 0);
@@ -60,6 +61,7 @@ namespace NapierBankingService
 
             if (headerMessageBox.Text.Contains("S") || headerMessageBox.Text.Contains("T") || !headerMessageBox.Text.Contains("E"))
             {
+                messageBody.MaxLength = app.SmsTwitterLimit;
                 subjectLine.Visibility = Visibility.Collapsed;
                 subjectLabel.Visibility = Visibility.Collapsed;
                 messageBody.Margin = new Thickness(195, 154, 0, 0);
