@@ -155,7 +155,7 @@ namespace NapierBankingService.ApplicationLayer
                     break;
                 case 'E':
                     
-                    incidentDetected = Utilities.DetectIncident(subject); //detects whether or not the email is a significant incident (true or false)
+                    incidentDetected = SignificantIncident.DetectIncident(subject); //detects whether or not the email is a significant incident (true or false)
                     
                     if (incidentDetected)
                     {

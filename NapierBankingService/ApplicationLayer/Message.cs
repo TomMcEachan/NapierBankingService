@@ -26,6 +26,23 @@ namespace NapierBankingService.ApplicationLayer
 
         public Message () { }
 
-              
+
+        /// <summary>
+        /// This method takes a body and expands it based on the abbreviations found in the dictionary list
+        /// </summary>
+        /// <param name="body"></param>
+        /// <param name="abbreviations"></param>
+        /// <returns>
+        /// An expanded version of the body added by the user
+        /// </returns>
+        public static string ExpandTextSpeak(string body, Dictionary<string, string> abbreviations)
+        {
+            foreach (string abbreviation in abbreviations.Keys)
+            {
+                body = body.Replace(abbreviation, abbreviation + " <" + abbreviations[abbreviation] + ">");
+            }
+
+            return body;
+        }
     }
 }

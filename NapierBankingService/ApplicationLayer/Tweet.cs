@@ -40,7 +40,7 @@ namespace NapierBankingService.ApplicationLayer
             /* Instance of an Empty Tweet Object */
             Tweet t = new Tweet();
 
-            body = Utilities.ExpandTextSpeak(body, abbreviations);
+            body = Message.ExpandTextSpeak(body, abbreviations);
             sender = t.DetectTweetSender(body);
             List <string> mentionsList = t.DetectMentions(body);
             List<string> hashtagsList = t.DetectHashtags(body);

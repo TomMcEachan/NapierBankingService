@@ -45,7 +45,7 @@ namespace NapierBankingService.ApplicationLayer
             SMS s = new SMS();
 
             
-            body = Utilities.ExpandTextSpeak(body, abbreviations); // expands the body
+            body = Message.ExpandTextSpeak(body, abbreviations); // expands the body
             sender = s.DetectPhoneNumber(body); //detects the message sender
 
 
