@@ -9,10 +9,14 @@
 
   <ItemGroup>
     <None Remove="Assets\Logo.png" />
+    <None Remove="Assets\textwords.csv" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Include="Assets\Logo.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\textwords.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
