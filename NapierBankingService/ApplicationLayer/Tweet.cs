@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace NapierBankingService.ApplicationLayer
 {
+    [Serializable]
     public class Tweet : Message
     {
         private List<string> _hashTags;

@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
@@ -25,6 +27,17 @@ namespace NapierBankingService.DataLayer
 
             return dict;
         }
+
+        public static void DeserializeEmail()
+        {
+            string location = AppDomain.CurrentDomain.BaseDirectory + @"\NapierBankingSystem\Emails";
+           
+
+           List<ApplicationLayer.Email> emailList = new List<ApplicationLayer.Email>();
+
+                
+           
+        } 
 
         
      }
