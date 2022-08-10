@@ -143,8 +143,13 @@ namespace NapierBankingService.ApplicationLayer
             switch (type)
             {
                 case 'S':
+
+                    SMS sms = SMS.ProcessSMS(body, subject, header, type, abbreviations);
+
                     break;
                 case 'T':
+
+
                     break;
                 case 'E':
                     

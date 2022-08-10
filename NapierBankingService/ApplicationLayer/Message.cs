@@ -1,4 +1,6 @@
-﻿namespace NapierBankingService.ApplicationLayer
+﻿using System.Collections.Generic;
+
+namespace NapierBankingService.ApplicationLayer
 {
     public class Message
     {
@@ -24,9 +26,6 @@
 
         public Message () { }
 
-        public void ExpandTextSpeak()
-        {
-
-        }    
+              
     }
 }

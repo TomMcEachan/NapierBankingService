@@ -15,6 +15,22 @@ namespace NapierBankingService.ApplicationLayer
         }
 
 
+        public static SMS ProcessSMS (string body, string subject, string header, char type, Dictionary <string, string> abbreviations)
+        {
+            /* Local Variables */
+            string sender = string.Empty;
 
+
+            body = Utilities.ExpandTextSpeak(body, abbreviations);
+
+
+
+
+            SMS sms = new SMS(header, body, type, sender);
+
+
+            return sms; 
+
+        }
     }
 }
