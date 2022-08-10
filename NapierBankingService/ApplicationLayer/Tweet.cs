@@ -22,8 +22,6 @@ namespace NapierBankingService.ApplicationLayer
         public Tweet() { }
         
 
-
-
         /// <summary>
         /// This method processes the Tweet by exanding the text speak and detecting the hashtags, mentions, and tweet sender
         /// </summary>
@@ -47,7 +45,7 @@ namespace NapierBankingService.ApplicationLayer
             List <string> mentionsList = t.DetectMentions(body);
             List<string> hashtagsList = t.DetectHashtags(body);
 
-            Tweet tweet = new Tweet(header, body, type, sender, mentionsList, mentionsList);
+            Tweet tweet = new Tweet(header, body, type, sender, hashtagsList, mentionsList);
 
             return tweet;
         }
@@ -82,7 +80,7 @@ namespace NapierBankingService.ApplicationLayer
         /// </returns>
         public List<string> DetectMentions(string body)
         {
-            Regex rx = new Regex(@"/(^|[^@\w])@(\w{1,15})\b/");
+            Regex rx = new Regex(@"@+[a-zA-Z0-9(_)]{1,}");
             List<string> mentions;
 
             MatchCollection matches = rx.Matches(body);
@@ -102,7 +100,7 @@ namespace NapierBankingService.ApplicationLayer
         /// </returns>
         public string DetectTweetSender(string body)
         {
-            Regex rx = new Regex(@"/(^|[^@\w])@(\w{1,15})\b/");
+            Regex rx = new Regex(@"@+[a-zA-Z0-9(_)]{1,}");
 
             Match match = rx.Match(body);
 

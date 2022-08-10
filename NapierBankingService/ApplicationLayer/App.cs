@@ -150,6 +150,7 @@ namespace NapierBankingService.ApplicationLayer
                 case 'T':
 
                     Tweet tweet = Tweet.ProcessTweet(body, header, type, abbreviations);
+                    Debug.WriteLine(tweet.Mentions[0]);
 
                     break;
                 case 'E':
