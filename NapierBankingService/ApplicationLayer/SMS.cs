@@ -9,14 +9,9 @@ namespace NapierBankingService.ApplicationLayer
     public class SMS : Message
     {
       
-
-        public SMS(string messageHeader, string messageBody, char messageType, string sender, int characterLimit) : base(messageHeader, messageBody, messageType, sender, characterLimit)
+        public SMS(string messageHeader, string messageBody, char messageType, string sender) : base(messageHeader, messageBody, messageType, sender)
         {
-            MessageHeader = messageHeader;
-            MessageBody = messageBody;
-            MessageType = messageType;
-            Sender = sender;
-            CharacterLimit = characterLimit;
+                 
         }
 
 

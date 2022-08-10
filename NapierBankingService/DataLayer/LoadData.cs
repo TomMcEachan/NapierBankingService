@@ -1,29 +1,28 @@
-﻿using CsvHelper;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NapierBankingService.DataLayer
 {
     public class LoadData
     {
 
-        public string Abbreviation { get; set; }
-        public string FullText { get; set; }
-
-
-        void ReadCSV()
+        public static Dictionary<string, string> ReadTextWordsCSV()
         {
+            Dictionary<string, string> dict = new Dictionary<string, string>();
+
             using (var stream = new StreamReader(@"Assets\textwords.csv"))
-            using (var csv = new CsvReader(stream, CultureInfo.InvariantCulture))
             {
-                var records = csv.GetRecords<LoadData>();
+                while (!stream.EndOfStream)
+                {
+                    var line = stream.ReadLine();
+                    if (line == null) continue;
+                    var words = line.Split(',');
+                    dict.Add(words[0], words[1]);
+                }
             }
 
+            return dict;
         }
 
         

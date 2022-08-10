@@ -15,49 +15,68 @@ namespace NapierBankingService.ApplicationLayer
         private List<string> Mentions;
         private List<string> MessageList;
         private List<SignificantIncident> SIRList;
-        private List<string> QuarantineList = new List<string>();
-        private Dictionary<string, string> Abbreviations;
-        private string URL;
+        private Dictionary<string, string> abbreviations;
+        
 
-        private string headerText;
-        private string bodyText;
         private char type;
-        private string emailAddress;
-        private string dateString;
+        
 
-        private int TWITTER_LIMIT = 140;
-        private int EMAIL_LIMIT = 1028;
-        private int SMS_LIMIT = 140;
+        private int smsTwitterLimit = 140;
+        private int emailLimit = 1028;
+
+        public int EmailLimit { get => emailLimit; set => emailLimit = value; }
+        public int SmsTwitterLimit { get => smsTwitterLimit; set => smsTwitterLimit = value; }
+        public Dictionary<string, string> Abbreviations { get => abbreviations; set => abbreviations = value; }
 
 
-        public void ProcessSubmission(string header, string body)
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="header"></param>
+        /// <param name="body"></param>
+        /// <param name="subject"></param>
+        /// <param name="abbreviations"></param>
+        public void ProcessSubmission(string header, string body, string subject)
         {
-            
             type = ProcessHeader(header);
-            ProcessBody(body, header, type);
-           
+            ProcessMessage(body, header, subject, type, abbreviations);           
         }
 
+     
         /* Methods for Processing the Header Information */
+
+        /// <summary>
+        /// This method processes the header information and returns the correct type
+        /// </summary>
+        /// <param name="header"></param>
+        /// <returns>
+        /// A char signifying the type of message recieved 
+        /// </returns>
         public char ProcessHeader(string header)
         {
-            headerText = header;
+            string headerText = header;
             type = DetectType(header);
             return type;
         }
 
-
+        /// <summary>
+        /// This method checks whether or not the user input is valid
+        /// </summary>
+        /// <param name="header"></param>
+        /// <returns></returns>
         public bool HeaderValid (string header)
         {
             bool valid = true;
 
-            if (header.Length > 9)
+            if (header.Length > 10)
             {
                 MessageBox.Show("Header is too long - please input a valid message header", "Error" );
                 valid = false;
             }
 
-            if (header.Length < 9)
+            if (header.Length < 10)
             {
                 MessageBox.Show("Header is not long enough - please input a valid message header", "Error");
                 valid = false;
@@ -79,6 +98,14 @@ namespace NapierBankingService.ApplicationLayer
         }
 
 
+        
+        /// <summary>
+        /// This method detects the type of message
+        /// </summary>
+        /// <param name="headerText"></param>
+        /// <returns>
+        /// A char signifying the type of message recieved
+        /// </returns>
         public char DetectType(string headerText)
         {
             if (headerText.Contains("S"))
@@ -101,14 +128,18 @@ namespace NapierBankingService.ApplicationLayer
 
 
 
-        /* Methods for Processing the Body Text */
+        /* Methods for Processing Messages */
 
-        public void ProcessBody(string body, string header, char type)
+        /// <summary>
+        /// This method processes a message based on the specification of its type
+        /// </summary>
+        /// <param name="body"></param>
+        /// <param name="header"></param>
+        /// <param name="subject"></param>
+        /// <param name="type"></param>
+        public void ProcessMessage(string body, string header, string subject, char type, Dictionary<string, string> abbreviations)
         {
-            string email;
-            string date;
-            List<string> urlList;
-
+            bool incidentDetected;
             switch (type)
             {
                 case 'S':
@@ -116,69 +147,33 @@ namespace NapierBankingService.ApplicationLayer
                 case 'T':
                     break;
                 case 'E':
-                   
-                    email = DetectEmailAddress(body);
-                    date = DetectDate(body);
-                    urlList = DetectURL(body);
-
-                  
-                    Debug.WriteLine(urlList.ToString());
                     
-
+                    incidentDetected = Utilities.DetectIncident(subject); //detects whether or not the email is a significant incident (true or false)
+                    
+                    if (incidentDetected)
+                    {
+                        SignificantIncident significantIncident = SignificantIncident.ProcessSignificantIncident(body, subject, header, type);
+                        Debug.WriteLine(significantIncident.IncidentType);
+                    }
+                    
+                    if (!incidentDetected)
+                    {
+                        Email email = Email.ProcessEmail(body, subject, header, type);
+                        Debug.WriteLine(email.MessageBody);
+                    }
                     break;
-            }
+            }      
         }
 
 
-
-        public string DetectDate(string body)
-        {
-            Regex rx = new Regex("(SIR)\\s*([0-2][1-9]|3[0-1])\\/(0[1-9]|1[0-2])\\/([0-9][0-9])");
-
-            MatchCollection matches = rx.Matches(body);
-
-            foreach (Match match in matches)
-            {
-                dateString = match.Value;
-            }
-
-            return dateString;
-        }
-
-
-        public string DetectEmailAddress(string body)
-        {
-            Regex rx = new Regex("[a-zA-Z0-9.()]{1,}@[a-zA-Z0-9()]{1,}.[a-zA-Z.(_)]{1,}");
-
-            MatchCollection matches = rx.Matches(body);
-
-            foreach (Match match in matches)
-            {
-                emailAddress = match.Value;
-            }
-
-            return emailAddress;
-        }
-
-
-        public List<string> DetectURL (string body)
-        {
-            string url;
-            Regex rx = new Regex(@"((http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?)");
-
-            MatchCollection matches = rx.Matches(body);
-
-            foreach (Match match in matches)
-            {
-                url = match.Value;
-                QuarantineList.Add(url);
-            }
-
-            return QuarantineList;
-        }
+        
 
 
 
 
+
+        
+
+    
     }
 }
