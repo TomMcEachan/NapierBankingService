@@ -144,7 +144,7 @@ namespace NapierBankingService.ApplicationLayer
             {
                 case 'S':
 
-                    SMS sms = SMS.ProcessSMS(body, subject, header, type, abbreviations);
+                    SMS sms = SMS.ProcessSMS(body, header, type, abbreviations);
 
                     break;
                 case 'T':
@@ -158,13 +158,13 @@ namespace NapierBankingService.ApplicationLayer
                     if (incidentDetected)
                     {
                         SignificantIncident significantIncident = SignificantIncident.ProcessSignificantIncident(body, subject, header, type);
-                        Debug.WriteLine(significantIncident.IncidentType);
+                        
                     }
                     
                     if (!incidentDetected)
                     {
                         Email email = Email.ProcessEmail(body, subject, header, type);
-                        Debug.WriteLine(email.MessageBody);
+                        
                     }
                     break;
             }      
