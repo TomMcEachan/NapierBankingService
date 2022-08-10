@@ -145,12 +145,12 @@ namespace NapierBankingService.ApplicationLayer
                 case 'S':
 
                     SMS sms = SMS.ProcessSMS(body, header, type, abbreviations);
-
+                    Debug.WriteLine(sms.MessageBody);
                     break;
                 case 'T':
 
                     Tweet tweet = Tweet.ProcessTweet(body, header, type, abbreviations);
-                    Debug.WriteLine(tweet.Mentions[0]);
+                    Debug.WriteLine(tweet.MessageBody);
 
                     break;
                 case 'E':

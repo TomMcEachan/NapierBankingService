@@ -41,11 +41,12 @@ namespace NapierBankingService.ApplicationLayer
         /// </returns>
         public static string ExpandTextSpeak(string body, Dictionary<string, string> abbreviations)
         {
-            string expandedBody;
+            foreach (string abbreviation in abbreviations.Keys)
+            {
+                body = body.Replace(abbreviation, abbreviation + " <" + abbreviations[abbreviation] + ">");
+            }
 
-            expandedBody = string.Join(" ", body.Split(' ').Select(i => abbreviations.ContainsKey(i) ? abbreviations[i] : i));
-            return expandedBody;
-
+            return body;
         }
     }
 }
