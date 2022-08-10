@@ -9,10 +9,9 @@ using System.Windows;
 
 namespace NapierBankingService.ApplicationLayer
 {
-    internal class App
+    public class App
     {
         private Dictionary<string, int> HashtagDict;
-        private List<string> Mentions;
         private List<string> MessageList;
         private List<SignificantIncident> SIRList;
         private Dictionary<string, string> abbreviations;
@@ -27,9 +26,6 @@ namespace NapierBankingService.ApplicationLayer
         public int EmailLimit { get => emailLimit; set => emailLimit = value; }
         public int SmsTwitterLimit { get => smsTwitterLimit; set => smsTwitterLimit = value; }
         public Dictionary<string, string> Abbreviations { get => abbreviations; set => abbreviations = value; }
-
-
-
 
         /// <summary>
         /// 
@@ -145,12 +141,13 @@ namespace NapierBankingService.ApplicationLayer
                 case 'S':
 
                     SMS sms = SMS.ProcessSMS(body, header, type, abbreviations);
-                    Debug.WriteLine(sms.MessageBody);
+                    DataLayer.SaveData.SerializeSMS(sms);
+
                     break;
                 case 'T':
 
                     Tweet tweet = Tweet.ProcessTweet(body, header, type, abbreviations);
-                    Debug.WriteLine(tweet.MessageBody);
+                    DataLayer.SaveData.SerializeTweet(tweet);
 
                     break;
                 case 'E':
@@ -160,16 +157,19 @@ namespace NapierBankingService.ApplicationLayer
                     if (incidentDetected)
                     {
                         SignificantIncident significantIncident = SignificantIncident.ProcessSignificantIncident(body, subject, header, type);
-                        
+                        DataLayer.SaveData.SerializeSignificantIncident(significantIncident);
                     }
                     
                     if (!incidentDetected)
                     {
                         Email email = Email.ProcessEmail(body, subject, header, type);
-                        
+                        DataLayer.SaveData.SerializeEmail(email);
                     }
                     break;
-            }      
+            }
+            
+
+
         }
 
 

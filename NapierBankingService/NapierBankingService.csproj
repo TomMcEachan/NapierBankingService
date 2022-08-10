@@ -8,6 +8,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="MessageOutputs\**" />
+    <EmbeddedResource Remove="MessageOutputs\**" />
+    <None Remove="MessageOutputs\**" />
+    <Page Remove="MessageOutputs\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Assets\Logo.png" />
     <None Remove="Assets\textwords.csv" />
   </ItemGroup>

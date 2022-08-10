@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 
 namespace NapierBankingService.ApplicationLayer
 {
-    class Tweet : Message
+    public class Tweet : Message
     {
         private List<string> _hashTags;
         private List<string> _mentions;
