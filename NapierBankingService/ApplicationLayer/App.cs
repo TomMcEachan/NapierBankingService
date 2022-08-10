@@ -15,7 +15,7 @@ namespace NapierBankingService.ApplicationLayer
         private List<string> Mentions;
         private List<string> MessageList;
         private List<SignificantIncident> SIRList;
-        private Dictionary<string, string> Abbreviations;
+        private Dictionary<string, string> abbreviations;
         
 
         private char type;
@@ -23,19 +23,25 @@ namespace NapierBankingService.ApplicationLayer
 
         private int smsTwitterLimit = 140;
         private int emailLimit = 1028;
-        
 
-        
         public int EmailLimit { get => emailLimit; set => emailLimit = value; }
         public int SmsTwitterLimit { get => smsTwitterLimit; set => smsTwitterLimit = value; }
+        public Dictionary<string, string> Abbreviations { get => abbreviations; set => abbreviations = value; }
 
+
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="header"></param>
+        /// <param name="body"></param>
+        /// <param name="subject"></param>
+        /// <param name="abbreviations"></param>
         public void ProcessSubmission(string header, string body, string subject)
         {
-
             type = ProcessHeader(header);
-            
-            ProcessMessage(body, header, subject, type);
-           
+            ProcessMessage(body, header, subject, type, abbreviations);           
         }
 
      
@@ -64,13 +70,13 @@ namespace NapierBankingService.ApplicationLayer
         {
             bool valid = true;
 
-            if (header.Length > 9)
+            if (header.Length > 10)
             {
                 MessageBox.Show("Header is too long - please input a valid message header", "Error" );
                 valid = false;
             }
 
-            if (header.Length < 9)
+            if (header.Length < 10)
             {
                 MessageBox.Show("Header is not long enough - please input a valid message header", "Error");
                 valid = false;
@@ -131,8 +137,9 @@ namespace NapierBankingService.ApplicationLayer
         /// <param name="header"></param>
         /// <param name="subject"></param>
         /// <param name="type"></param>
-        public void ProcessMessage(string body, string header, string subject, char type)
+        public void ProcessMessage(string body, string header, string subject, char type, Dictionary<string, string> abbreviations)
         {
+            bool incidentDetected;
             switch (type)
             {
                 case 'S':
@@ -140,58 +147,32 @@ namespace NapierBankingService.ApplicationLayer
                 case 'T':
                     break;
                 case 'E':
-                    object mail = ProcessEmail(body, subject, header, type);
-                    Debug.WriteLine(mail.ToString());
+                    
+                    incidentDetected = Utilities.DetectIncident(subject); //detects whether or not the email is a significant incident (true or false)
+                    
+                    if (incidentDetected)
+                    {
+                        SignificantIncident significantIncident = SignificantIncident.ProcessSignificantIncident(body, subject, header, type);
+                        Debug.WriteLine(significantIncident.IncidentType);
+                    }
+                    
+                    if (!incidentDetected)
+                    {
+                        Email email = Email.ProcessEmail(body, subject, header, type);
+                        Debug.WriteLine(email.MessageBody);
+                    }
                     break;
             }      
         }
 
 
-        /// <summary>
-        /// This method works through the steps to collect the necessary information about an email 
-        /// </summary>
-        /// <param name="body"></param>
-        /// <param name="subject"></param>
-        public object ProcessEmail(string body, string subject, string header, char type)
-        {
-             /*Local Variables */
-             string emailAddress;
-             string dateString;
-             bool incidentDetected;
-             string incidentType;
-             string sortCode;  
-             List<string> QuarantineList = new List<string>();
+        
 
-             /* New Instance of Empty Email object*/
-             Email e = new Email();
 
-             emailAddress = e.DetectEmailAddress(body); //detects the email address from the body
-             dateString = e.DetectDate(subject); //detects the date from the subject line
-             incidentDetected = e.DetectIncident(subject); //detects whether or not the email is a significant incident (true or false)
-             QuarantineList = e.DetectURL(body);
-             body = e.QuarantineURL(body, QuarantineList);
 
-            /* Creates new Instance of Significant Incident if Detected */
-            if (incidentDetected)
-            {
-                SignificantIncident sig = new SignificantIncident();
-                incidentType = sig.DetectIncidentType(subject);
-                sortCode = sig.DetectSortCode(subject);
-                SignificantIncident newMessage = new SignificantIncident(sortCode, incidentType, header, body, type, emailAddress, subject, dateString);
-                return newMessage;
-            }
 
-            else if (!incidentDetected)
-            {
-                Email email = new Email(header, body, type, emailAddress, subject, dateString);
-                return email;
-            }
 
-            else
-            {
-                return null;
-            }
-        }
+        
 
     
     }

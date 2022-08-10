@@ -109,19 +109,33 @@ namespace NapierBankingService.ApplicationLayer
         }
 
 
-        public bool DetectIncident(string subject)
+        /// <summary>
+        /// This method works through the steps to collect the necessary information about an email 
+        /// </summary>
+        /// <param name="body"></param>
+        /// <param name="subject"></param>
+        public static Email ProcessEmail(string body, string subject, string header, char type)
         {
-            if (subject.Contains("SIR"))
-            {
-                return true;
-            }
+            /*Local Variables */
+            string emailAddress;
+            string dateString;
+            List<string> QuarantineList = new List<string>();
 
-            else
-            {
-                return false;
-            }
+            /* New Instance of Empty Email object*/
+            Email e = new Email();
+
+            emailAddress = e.DetectEmailAddress(body); //detects the email address from the body
+            dateString = e.DetectDate(subject); //detects the date from the subject line
+            QuarantineList = e.DetectURL(body);
+            body = e.QuarantineURL(body, QuarantineList);
+            Email email = new Email(header, body, type, emailAddress, subject, dateString);
+
+            return email;
+
         }
 
-        
+
+
+
     }
 }

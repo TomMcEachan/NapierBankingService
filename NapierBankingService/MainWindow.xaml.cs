@@ -1,4 +1,5 @@
 ﻿
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
@@ -14,15 +15,18 @@ namespace NapierBankingService
         private string header;
         private string body;
         private string subject;
+        private Dictionary<string, string> abbreviations;
 
         public string Header { get => header; set => header = value; }
         public string Body { get => body; set => body = value; }
         public string Subject{ get => subject; set => subject = value; }
+      
 
         public MainWindow()
         {
             InitializeComponent();
             app = new ApplicationLayer.App();
+            app.Abbreviations = DataLayer.LoadData.ReadTextWordsCSV();
         }
         
        

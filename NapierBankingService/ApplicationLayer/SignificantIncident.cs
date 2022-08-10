@@ -106,6 +106,27 @@ namespace NapierBankingService.ApplicationLayer
         }
 
 
+        public static SignificantIncident ProcessSignificantIncident(string body, string subject, string header, char type)
+        {
+            string emailAddress;
+            string dateString;
+            string incidentType;
+            string sortCode;
+            List<string> QuarantineList = new List<string>();
+
+            SignificantIncident sig = new SignificantIncident();
+            incidentType = sig.DetectIncidentType(subject);
+            sortCode = sig.DetectSortCode(subject);
+            emailAddress = sig.DetectEmailAddress(body); //detects the email address from the body
+            dateString = sig.DetectDate(subject); //detects the date from the subject line
+            QuarantineList = sig.DetectURL(body);
+            body = sig.QuarantineURL(body, QuarantineList);
+
+            SignificantIncident newMessage = new SignificantIncident(sortCode, incidentType, header, body, type, emailAddress, subject, dateString);
+            return newMessage;
+        }
+
+
 
     }
 }
