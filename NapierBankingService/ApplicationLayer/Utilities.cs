@@ -44,9 +44,6 @@ namespace NapierBankingService.ApplicationLayer
             string expandedBody;
 
             expandedBody = string.Join(" ", body.Split(' ').Select(i => abbreviations.ContainsKey(i) ? abbreviations[i] : i));
-
-            Debug.WriteLine(expandedBody);
-
             return expandedBody;
 
         }
