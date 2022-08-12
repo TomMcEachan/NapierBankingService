@@ -9,13 +9,13 @@ namespace NapierBankingService.ApplicationLayer
     [Serializable]
     public class Tweet : Message
     {
-        private List<string> _hashTags;
+        private List<Hashtag> _hashTags;
         private List<string> _mentions;
 
-        public List<string> HashTags { get => _hashTags; set => _hashTags = value; }
+        public List<Hashtag> HashTags { get => _hashTags; set => _hashTags = value; }
         public List<string> Mentions { get => _mentions; set => _mentions = value; }
 
-        public Tweet(string messageHeader, string messageBody, char messageType, string sender, List<string> hashTags, List<string> mentions) : base(messageHeader, messageBody, messageType, sender)
+        public Tweet(string messageHeader, string messageBody, char messageType, string sender, List<Hashtag> hashTags, List<string> mentions) : base(messageHeader, messageBody, messageType, sender)
         {
             HashTags = hashTags;
             Mentions = mentions;
@@ -45,7 +45,7 @@ namespace NapierBankingService.ApplicationLayer
             body = Message.ExpandTextSpeak(body, abbreviations);
             sender = t.DetectTweetSender(body);
             List <string> mentionsList = t.DetectMentions(body);
-            List<string> hashtagsList = t.DetectHashtags(body);
+            List<Hashtag> hashtagsList = t.DetectHashtags(body);
 
             Tweet tweet = new Tweet(header, body, type, sender, hashtagsList, mentionsList);
 
@@ -60,14 +60,26 @@ namespace NapierBankingService.ApplicationLayer
         /// <returns>
         /// A list of the detected hashtags
         /// </returns>
-        public List<string> DetectHashtags (string body)
+        public List<Hashtag> DetectHashtags (string body)
         {
             Regex rx = new Regex(@"#+[a-zA-Z0-9(_)]{1,}");
-            List<string> hashtags;
+            List<Hashtag> hashtags = new List<Hashtag>();
+            List<string> stringTags = new List<string>();
 
             MatchCollection matches = rx.Matches(body);
 
-            hashtags = matches.Cast<Match>().Select(m => m.Value).ToList();
+            //hashtags = matches.Cast<Match>().Select(m => m.Value).ToList();
+
+            foreach (Match match in matches)
+            {
+                stringTags.Add(match.Value);     
+            }
+
+            foreach (string tag in stringTags)
+            {
+                Hashtag hash = new Hashtag(stringTags.ElementAt(0));          
+                hashtags.Add(hash);
+            }
 
             return hashtags;
         }
@@ -112,6 +124,43 @@ namespace NapierBankingService.ApplicationLayer
 
             return mention;
 
+        }
+
+        public static Dictionary<string, int> CollateHashtags(List<Tweet> tweets)
+        {
+            List<Hashtag> hashtags = new List<Hashtag>();
+            List<string> allTags = new List<string>();
+                
+            foreach (Tweet tweet in tweets)
+            {
+                hashtags.Add(tweet.HashTags.ElementAt(0));
+            }
+
+            foreach (Hashtag tag in hashtags)
+            {
+                allTags.Add(tag.Tag);
+            }
+
+
+            var query = allTags.GroupBy(x => x)
+                                .ToDictionary(y => y.Key, y => y.Count())
+                                .OrderByDescending(z => z.Value);
+
+            Dictionary<string, int> dict = new Dictionary<string, int>();
+            
+            
+            foreach (var x in query)
+            {
+                dict.Add(x.Key, x.Value);
+            }
+
+            foreach (KeyValuePair<string, int> kvp in dict)
+            {
+                Debug.WriteLine("Hastag: {0} ---- Times Used: {1}", kvp.Key, kvp.Value);
+            }
+            
+
+            return dict;
         }
      
 

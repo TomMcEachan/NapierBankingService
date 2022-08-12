@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.Windows;
 
 namespace NapierBankingService.ApplicationLayer
@@ -12,23 +6,37 @@ namespace NapierBankingService.ApplicationLayer
     public class App
     {
         private Dictionary<string, int> HashtagDict;
-        private List<string> MessageList;
         private List<SignificantIncident> SIRList;
         private Dictionary<string, string> abbreviations;
-        
-
+        private List<Tweet> tweetList;
         private char type;
-        
-
         private int smsTwitterLimit = 140;
         private int emailLimit = 1028;
 
         public int EmailLimit { get => emailLimit; set => emailLimit = value; }
         public int SmsTwitterLimit { get => smsTwitterLimit; set => smsTwitterLimit = value; }
         public Dictionary<string, string> Abbreviations { get => abbreviations; set => abbreviations = value; }
+        public List<Tweet> TweetList { get => tweetList; set => tweetList = value; }
+
+
 
         /// <summary>
-        /// 
+        /// This method is triggered on application start-up
+        /// </summary>
+        public void StartUp()
+        {
+            Abbreviations = DataLayer.LoadData.ReadTextWordsCSV();
+            DataLayer.LoadData.DeserializeEmails();
+            DataLayer.LoadData.DeserializeSMSs();
+            DataLayer.LoadData.DeserializeSignificantIncidents();
+            TweetList = DataLayer.LoadData.DeserializeTweets();
+            Tweet.CollateHashtags(TweetList);
+        }
+
+
+
+        /// <summary>
+        /// This method processes the message that is added by the user through the GUI
         /// </summary>
         /// <param name="header"></param>
         /// <param name="body"></param>
@@ -56,6 +64,8 @@ namespace NapierBankingService.ApplicationLayer
             type = DetectType(header);
             return type;
         }
+
+
 
         /// <summary>
         /// This method checks whether or not the user input is valid

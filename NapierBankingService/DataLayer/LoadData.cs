@@ -1,8 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 
@@ -10,7 +8,12 @@ namespace NapierBankingService.DataLayer
 {
     public class LoadData
     {
-
+        /// <summary>
+        /// This creates a dictionary for the textwords that are needed to be exapnded
+        /// </summary>
+        /// <returns>
+        /// The text words dictionary
+        /// </returns>
         public static Dictionary<string, string> ReadTextWordsCSV()
         {
             Dictionary<string, string> dict = new Dictionary<string, string>();
@@ -29,6 +32,12 @@ namespace NapierBankingService.DataLayer
             return dict;
         }
 
+        /// <summary>
+        /// This reads json from file ans deserializes it into an Email object for use in the program
+        /// </summary>
+        /// <returns>
+        /// A list of significant incidents
+        /// </returns>
         public static List<ApplicationLayer.Email> DeserializeEmails()
         {
             string location = AppDomain.CurrentDomain.BaseDirectory + @"\NapierBankingSystem\Emails";
@@ -52,7 +61,12 @@ namespace NapierBankingService.DataLayer
         }
 
 
-
+        /// <summary>
+        /// This reads json from file ans deserializes it into a SMS object for use in the program
+        /// </summary>
+        /// <returns>
+        /// A list of significant incidents
+        /// </returns>
         public static List<ApplicationLayer.SMS> DeserializeSMSs()
         {
             string location = AppDomain.CurrentDomain.BaseDirectory + @"\NapierBankingSystem\SMS";
@@ -76,6 +90,12 @@ namespace NapierBankingService.DataLayer
         }
 
 
+        /// <summary>
+        /// This reads json from file ans deserializes it into a significant incident object for use in the program
+        /// </summary>
+        /// <returns>
+        /// A list of significant incidents
+        /// </returns>
         public static List<ApplicationLayer.SignificantIncident> DeserializeSignificantIncidents()
         {
             string location = AppDomain.CurrentDomain.BaseDirectory + @"\NapierBankingSystem\Significant-Incidents";
@@ -99,6 +119,13 @@ namespace NapierBankingService.DataLayer
         }
 
 
+
+        /// <summary>
+        /// This reads json from file ans deserializes it into a tweet object for use in the program
+        /// </summary>
+        /// <returns>
+        /// A list of deserialized tweets
+        /// </returns>
         public static List<ApplicationLayer.Tweet> DeserializeTweets()
         {
             string location = AppDomain.CurrentDomain.BaseDirectory + @"\NapierBankingSystem\Tweets";

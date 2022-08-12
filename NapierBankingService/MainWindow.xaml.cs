@@ -27,11 +27,7 @@ namespace NapierBankingService
         {
             InitializeComponent();
             app = new ApplicationLayer.App();
-            app.Abbreviations = DataLayer.LoadData.ReadTextWordsCSV();
-            DataLayer.LoadData.DeserializeEmails();
-            DataLayer.LoadData.DeserializeSMSs();
-            DataLayer.LoadData.DeserializeSignificantIncidents();
-            DataLayer.LoadData.DeserializeTweets();
+            app.StartUp();
         }
         
        
