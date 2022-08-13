@@ -16,9 +16,9 @@ namespace NapierBankingService.DataLayer
             string fileName = tweet.MessageHeader + ".json";
             string location = AppDomain.CurrentDomain.BaseDirectory + @"\NapierBankingSystem\Tweets";
 
-            System.IO.Directory.CreateDirectory(location);
+            Directory.CreateDirectory(location);
             
-            string pathString = System.IO.Path.Combine(location, fileName);
+            string pathString = Path.Combine(location, fileName);
 
             string output = JsonConvert.SerializeObject(tweet);
             File.WriteAllText(pathString, output);
@@ -29,9 +29,9 @@ namespace NapierBankingService.DataLayer
             string fileName = email.MessageHeader + ".json";
             string location = AppDomain.CurrentDomain.BaseDirectory + @"\NapierBankingSystem\Emails";
 
-            System.IO.Directory.CreateDirectory(location);
+            Directory.CreateDirectory(location);
 
-            string pathString = System.IO.Path.Combine(location, fileName);
+            string pathString = Path.Combine(location, fileName);
 
             string output = JsonConvert.SerializeObject(email);
             File.WriteAllText(pathString, output);
@@ -42,9 +42,9 @@ namespace NapierBankingService.DataLayer
             string fileName = sig.MessageHeader + ".json";
             string location = AppDomain.CurrentDomain.BaseDirectory + @"\NapierBankingSystem\Significant-Incidents";
 
-            System.IO.Directory.CreateDirectory(location);
+            Directory.CreateDirectory(location);
 
-            string pathString = System.IO.Path.Combine(location, fileName);
+            string pathString = Path.Combine(location, fileName);
 
             string output = JsonConvert.SerializeObject(sig);
             File.WriteAllText(pathString, output);
@@ -55,7 +55,7 @@ namespace NapierBankingService.DataLayer
             string fileName = sms.MessageHeader + ".json";
             string location = AppDomain.CurrentDomain.BaseDirectory + @"\NapierBankingSystem\SMS";
 
-            System.IO.Directory.CreateDirectory(location);
+            Directory.CreateDirectory(location);
 
             string pathString = System.IO.Path.Combine(location, fileName);
 

@@ -156,10 +156,9 @@ namespace NapierBankingService.ApplicationLayer
 
             foreach (KeyValuePair<string, int> kvp in dict)
             {
-                Debug.WriteLine("Hastag: {0} ---- Times Used: {1}", kvp.Key, kvp.Value);
+                Debug.WriteLine("Hashtag: {0} ---- Times Used: {1}", kvp.Key, kvp.Value);
             }
             
-
             return dict;
         }
      

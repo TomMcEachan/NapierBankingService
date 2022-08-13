@@ -1,11 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 
 namespace NapierBankingService.ApplicationLayer
 {
     public class App
     {
-        private Dictionary<string, int> HashtagDict;
+        private Dictionary<string, int> hashtagDict;
         private List<SignificantIncident> SIRList;
         private Dictionary<string, string> abbreviations;
         private List<Tweet> tweetList;
@@ -17,6 +19,7 @@ namespace NapierBankingService.ApplicationLayer
         public int SmsTwitterLimit { get => smsTwitterLimit; set => smsTwitterLimit = value; }
         public Dictionary<string, string> Abbreviations { get => abbreviations; set => abbreviations = value; }
         public List<Tweet> TweetList { get => tweetList; set => tweetList = value; }
+        public Dictionary<string, int> HashtagDict { get => hashtagDict; set => hashtagDict = value; }
 
 
 
@@ -30,7 +33,7 @@ namespace NapierBankingService.ApplicationLayer
             DataLayer.LoadData.DeserializeSMSs();
             DataLayer.LoadData.DeserializeSignificantIncidents();
             TweetList = DataLayer.LoadData.DeserializeTweets();
-            Tweet.CollateHashtags(TweetList);
+            HashtagDict = Tweet.CollateHashtags(TweetList);
         }
 
 
@@ -158,6 +161,7 @@ namespace NapierBankingService.ApplicationLayer
 
                     Tweet tweet = Tweet.ProcessTweet(body, header, type, abbreviations);
                     DataLayer.SaveData.SerializeTweet(tweet);
+                    TweetList = DataLayer.LoadData.DeserializeTweets();
 
                     break;
                 case 'E':
@@ -178,7 +182,18 @@ namespace NapierBankingService.ApplicationLayer
                     break;
             }
             
+        }
 
+
+        public Tuple<string, string, string> EndSession(Dictionary<string, int> trendingList)
+        {
+            string hello = "hello";
+            string hello2 = "hello";
+            var trendingHashtags = trendingList.Select(kvp => string.Format("Hashtag: {0} ---- Times Used: {1}", kvp.Key, kvp.Value, kvp.Value));
+            var trending = string.Join(Environment.NewLine, trendingHashtags);
+
+
+            return new Tuple<string, string,string>(trending, hello, hello2);
 
         }
 
