@@ -131,15 +131,19 @@ namespace NapierBankingService.ApplicationLayer
         /// <returns>
         /// A significant incident object with the relevant information
         /// </returns>
-        public static SignificantIncident ProcessSignificantIncident(string body, string subject, string header, char type)
+        public static SignificantIncident ProcessSignificantIncident(string body, string header, char type)
         {
             string emailAddress;
             string dateString;
             string incidentType;
             string sortCode;
+            string subject;
             List<string> QuarantineList;
 
             SignificantIncident sig = new SignificantIncident();
+
+           subject = sig.DetectSubjectLine(body);
+
             incidentType = sig.DetectIncidentType(subject);
             sortCode = sig.DetectSortCode(subject);
             emailAddress = sig.DetectEmailAddress(body); //detects the email address from the body

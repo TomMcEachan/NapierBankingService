@@ -11,15 +11,17 @@ namespace NapierBankingService.ApplicationLayer
         private string messageSubject;
         private string dateString;
         private string emailAddress;
+        private string subject;
         
 
         protected string MessageSubject { get => messageSubject; set => messageSubject = value; }
+        public string Subject { get => subject; set => subject = value; }
 
 
         /* Email Constructor */
-        public Email(string messageHeader, string messageBody, char messageType, string sender,  string messageSubject, string date) : base(messageHeader, messageBody, messageType, sender)
-        {  
-            MessageSubject = messageSubject;
+        public Email(string messageHeader, string messageBody, char messageType, string subject, string sender, string date) : base(messageHeader, messageBody, messageType, sender)
+        {
+            Subject = subject;
         }
 
         /* Empty Email Constructor */
@@ -108,27 +110,40 @@ namespace NapierBankingService.ApplicationLayer
             return body;
         }
 
+        public string DetectSubjectLine(string body)
+        {
+            Regex rx = new Regex("(Subject:) +.*");
+
+            Match match = rx.Match(body);
+
+            string subjectLine = match.Value;
+
+            return subjectLine;
+
+        }
 
         /// <summary>
         /// This method works through the steps to collect the necessary information about an email 
         /// </summary>
         /// <param name="body"></param>
         /// <param name="subject"></param>
-        public static Email ProcessEmail(string body, string subject, string header, char type)
+        public static Email ProcessEmail(string body, string header, char type)
         {
             /*Local Variables */
             string emailAddress;
             string dateString;
+            string subject;
             List<string> QuarantineList = new List<string>();
 
             /* New Instance of Empty Email object*/
             Email e = new Email();
 
+            subject = e.DetectSubjectLine(body);
             emailAddress = e.DetectEmailAddress(body); //detects the email address from the body
-            dateString = e.DetectDate(subject); //detects the date from the subject line
+            dateString = e.DetectDate(body); //detects the date from the subject line
             QuarantineList = e.DetectURL(body);
             body = e.QuarantineURL(body, QuarantineList);
-            Email email = new Email(header, body, type, emailAddress, subject, dateString);
+            Email email = new Email(header, body, type, subject, emailAddress, dateString);
 
             return email;
 

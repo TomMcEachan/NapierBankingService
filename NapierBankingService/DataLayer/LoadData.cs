@@ -162,6 +162,37 @@ namespace NapierBankingService.DataLayer
             return !Directory.EnumerateFileSystemEntries(path).Any();
         }
 
+
+        public static void GetDataFromFile(string filepath, string fileName, ApplicationLayer.App app)
+        {
+            Dictionary<string, string> data = new Dictionary<string, string>();
+
+            using (var stream = new StreamReader(filepath))
+            {
+                while (!stream.EndOfStream)
+                {
+                    var line = stream.ReadLine();
+                    if (line == null) continue;
+                    var words = line.Split(',');
+                    data.Add(words[0], words[1]);
+                }
+            }
+
+
+           foreach (KeyValuePair<string, string> kvp in data)
+           {
+              string header = kvp.Key;
+              string body = kvp.Value;
+
+              app.ProcessSubmission(header, body);
+           }
+
+
+          
+
+            
+        }
+
         
      }
   

@@ -52,10 +52,10 @@ namespace NapierBankingService.ApplicationLayer
         /// <param name="body"></param>
         /// <param name="subject"></param>
         /// <param name="abbreviations"></param>
-        public void ProcessSubmission(string header, string body, string subject)
+        public void ProcessSubmission(string header, string body)
         {
             type = ProcessHeader(header);
-            ProcessMessage(body, header, subject, type, abbreviations);           
+            ProcessMessage(body, header, type, abbreviations);           
         }
 
      
@@ -153,7 +153,7 @@ namespace NapierBankingService.ApplicationLayer
         /// <param name="header"></param>
         /// <param name="subject"></param>
         /// <param name="type"></param>
-        public void ProcessMessage(string body, string header, string subject, char type, Dictionary<string, string> abbreviations)
+        public void ProcessMessage(string body, string header, char type, Dictionary<string, string> abbreviations)
         {
             bool incidentDetected;
             switch (type)
@@ -175,11 +175,11 @@ namespace NapierBankingService.ApplicationLayer
                     break;
                 case 'E':
                     
-                    incidentDetected = SignificantIncident.DetectIncident(subject); //detects whether or not the email is a significant incident (true or false)
+                    incidentDetected = SignificantIncident.DetectIncident(body); //detects whether or not the email is a significant incident (true or false)
                     
                     if (incidentDetected)
                     {
-                        SignificantIncident significantIncident = SignificantIncident.ProcessSignificantIncident(body, subject, header, type);
+                        SignificantIncident significantIncident = SignificantIncident.ProcessSignificantIncident(body, header, type);
                         DataLayer.SaveData.SerializeSignificantIncident(significantIncident);
                         SIRList = DataLayer.LoadData.DeserializeSignificantIncidents();
                         SirStringList = SignificantIncident.CollateSignificantIncidents(SIRList);
@@ -187,7 +187,7 @@ namespace NapierBankingService.ApplicationLayer
                     
                     if (!incidentDetected)
                     {
-                        Email email = Email.ProcessEmail(body, subject, header, type);
+                        Email email = Email.ProcessEmail(body, header, type);
                         DataLayer.SaveData.SerializeEmail(email);
                     }
                     break;
