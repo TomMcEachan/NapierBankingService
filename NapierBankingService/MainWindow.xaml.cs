@@ -78,6 +78,7 @@ namespace NapierBankingService
         private void End_Session(object sender, RoutedEventArgs e)
         {
             Results Results = new Results(app);
+            this.Close();
             Results.Show();
         }
     }

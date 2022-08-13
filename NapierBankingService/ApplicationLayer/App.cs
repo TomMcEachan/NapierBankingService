@@ -8,7 +8,9 @@ namespace NapierBankingService.ApplicationLayer
     public class App
     {
         private Dictionary<string, int> hashtagDict;
-        private List<SignificantIncident> SIRList;
+        private List<SignificantIncident> sirList;
+        private List<string> sirStringList;
+        private List<string> mentionsList;
         private Dictionary<string, string> abbreviations;
         private List<Tweet> tweetList;
         private char type;
@@ -20,6 +22,9 @@ namespace NapierBankingService.ApplicationLayer
         public Dictionary<string, string> Abbreviations { get => abbreviations; set => abbreviations = value; }
         public List<Tweet> TweetList { get => tweetList; set => tweetList = value; }
         public Dictionary<string, int> HashtagDict { get => hashtagDict; set => hashtagDict = value; }
+        public List<string> MentionsList { get => mentionsList; set => mentionsList = value; }
+        public List<SignificantIncident> SIRList { get => sirList; set => sirList = value; }
+        public List<string> SirStringList { get => sirStringList; set => sirStringList = value; }
 
 
 
@@ -31,9 +36,11 @@ namespace NapierBankingService.ApplicationLayer
             Abbreviations = DataLayer.LoadData.ReadTextWordsCSV();
             DataLayer.LoadData.DeserializeEmails();
             DataLayer.LoadData.DeserializeSMSs();
-            DataLayer.LoadData.DeserializeSignificantIncidents();
+            SIRList = DataLayer.LoadData.DeserializeSignificantIncidents();
             TweetList = DataLayer.LoadData.DeserializeTweets();
             HashtagDict = Tweet.CollateHashtags(TweetList);
+            MentionsList = Tweet.CollateMentions(TweetList);
+            SirStringList = SignificantIncident.CollateSignificantIncidents(SIRList);
         }
 
 
@@ -155,6 +162,7 @@ namespace NapierBankingService.ApplicationLayer
 
                     SMS sms = SMS.ProcessSMS(body, header, type, abbreviations);
                     DataLayer.SaveData.SerializeSMS(sms);
+                    DataLayer.LoadData.DeserializeSMSs();
 
                     break;
                 case 'T':
@@ -162,6 +170,7 @@ namespace NapierBankingService.ApplicationLayer
                     Tweet tweet = Tweet.ProcessTweet(body, header, type, abbreviations);
                     DataLayer.SaveData.SerializeTweet(tweet);
                     TweetList = DataLayer.LoadData.DeserializeTweets();
+                    HashtagDict = Tweet.CollateHashtags(TweetList);
 
                     break;
                 case 'E':
@@ -172,6 +181,8 @@ namespace NapierBankingService.ApplicationLayer
                     {
                         SignificantIncident significantIncident = SignificantIncident.ProcessSignificantIncident(body, subject, header, type);
                         DataLayer.SaveData.SerializeSignificantIncident(significantIncident);
+                        SIRList = DataLayer.LoadData.DeserializeSignificantIncidents();
+                        SirStringList = SignificantIncident.CollateSignificantIncidents(SIRList);
                     }
                     
                     if (!incidentDetected)
@@ -185,15 +196,15 @@ namespace NapierBankingService.ApplicationLayer
         }
 
 
-        public Tuple<string, string, string> EndSession(Dictionary<string, int> trendingList)
+        public Tuple<string, List<string>, List<string>> EndSession(Dictionary<string, int> trendingList, List<string> mentions, List<string> sigs)
         {
-            string hello = "hello";
-            string hello2 = "hello";
+             
+            //Creates a string to be printed in the end of session window for the trending hashtags
             var trendingHashtags = trendingList.Select(kvp => string.Format("Hashtag: {0} ---- Times Used: {1}", kvp.Key, kvp.Value, kvp.Value));
             var trending = string.Join(Environment.NewLine, trendingHashtags);
 
-
-            return new Tuple<string, string,string>(trending, hello, hello2);
+         
+            return new Tuple<string, List<string>, List<string>>(trending, mentions, sigs);
 
         }
 

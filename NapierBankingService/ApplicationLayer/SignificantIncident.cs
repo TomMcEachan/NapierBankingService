@@ -137,7 +137,7 @@ namespace NapierBankingService.ApplicationLayer
             string dateString;
             string incidentType;
             string sortCode;
-            List<string> QuarantineList = new List<string>();
+            List<string> QuarantineList;
 
             SignificantIncident sig = new SignificantIncident();
             incidentType = sig.DetectIncidentType(subject);
@@ -171,6 +171,32 @@ namespace NapierBankingService.ApplicationLayer
                 return false;
             }
         }
+
+
+        public static List<string> CollateSignificantIncidents(List<SignificantIncident> sigs)
+        {
+            
+            List<SignificantIncident> Sigs = new List<SignificantIncident>();
+            List<string> stringSigs = new List<string>();
+
+            foreach (SignificantIncident sig in sigs)
+            {
+                Sigs.Add(sig);
+            }
+
+            foreach (SignificantIncident sig in Sigs)
+            {
+                stringSigs.Add(sig.IncidentType);
+            }
+
+
+            return stringSigs;
+        }
+
+
+
+
+
 
     }
 }

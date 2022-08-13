@@ -10,12 +10,12 @@ namespace NapierBankingService.ApplicationLayer
     public class Tweet : Message
     {
         private List<Hashtag> _hashTags;
-        private List<string> _mentions;
+        private List<Mention> _mentions;
 
         public List<Hashtag> HashTags { get => _hashTags; set => _hashTags = value; }
-        public List<string> Mentions { get => _mentions; set => _mentions = value; }
+        public List<Mention> Mentions { get => _mentions; set => _mentions = value; }
 
-        public Tweet(string messageHeader, string messageBody, char messageType, string sender, List<Hashtag> hashTags, List<string> mentions) : base(messageHeader, messageBody, messageType, sender)
+        public Tweet(string messageHeader, string messageBody, char messageType, string sender, List<Hashtag> hashTags, List<Mention> mentions) : base(messageHeader, messageBody, messageType, sender)
         {
             HashTags = hashTags;
             Mentions = mentions;
@@ -44,7 +44,7 @@ namespace NapierBankingService.ApplicationLayer
 
             body = Message.ExpandTextSpeak(body, abbreviations);
             sender = t.DetectTweetSender(body);
-            List <string> mentionsList = t.DetectMentions(body);
+            List <Mention> mentionsList = t.DetectMentions(body);
             List<Hashtag> hashtagsList = t.DetectHashtags(body);
 
             Tweet tweet = new Tweet(header, body, type, sender, hashtagsList, mentionsList);
@@ -92,14 +92,26 @@ namespace NapierBankingService.ApplicationLayer
         /// <returns>
         /// A list of the detected mentions
         /// </returns>
-        public List<string> DetectMentions(string body)
+        public List<Mention> DetectMentions(string body)
         {
             Regex rx = new Regex(@"@+[a-zA-Z0-9(_)]{1,}");
-            List<string> mentions;
+            List<Mention> mentions = new List<Mention>();
+            List<string> ids = new List<string>();
 
             MatchCollection matches = rx.Matches(body);
 
-            mentions = matches.Cast<Match>().Select(m => m.Value).ToList();
+            //mentions = matches.Cast<Match>().Select(m => m.Value).ToList();
+
+            foreach (Match match in matches)
+            {
+                ids.Add(match.Value);
+            }
+
+            foreach (string id in ids)
+            {
+                Mention mention = new Mention(id);
+                mentions.Add(mention);
+            }
 
             return mentions;
         }
@@ -162,6 +174,24 @@ namespace NapierBankingService.ApplicationLayer
             return dict;
         }
      
+        public static List<string> CollateMentions(List<Tweet> tweets)
+        {
+            List<Mention> IDs = new List<Mention>();
+            List<string> stringIDs = new List<string>();
+
+
+            foreach (Tweet tweet in tweets)
+            {
+                IDs.Add(tweet.Mentions.ElementAt(0));
+            }
+
+            foreach (Mention mention in  IDs)
+            {
+                stringIDs.Add(mention.UserID);
+            }
+
+            return stringIDs;
+        }
 
     }
 }
