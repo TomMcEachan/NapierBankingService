@@ -27,8 +27,7 @@ namespace NapierBankingService
         {
             InitializeComponent();
             app = new ApplicationLayer.App();
-            app.Abbreviations = DataLayer.LoadData.ReadTextWordsCSV();
-
+            app.StartUp();
         }
         
        
@@ -39,20 +38,21 @@ namespace NapierBankingService
             Body = messageBody.Text;
             Subject = subjectLine.Text;
 
-            bool headerValid = app.HeaderValid(Header);
 
-            if (!headerValid)
+            if (Header!= null &&  Body!= null && Subject != null)
             {
+                bool headerValid = app.HeaderValid(Header);
+
+                if (!headerValid)
+                {
                 headerMessageBox.Clear();
+                }
             }
-            
+              
             app.ProcessSubmission(Header, Body, Subject);   
         }
 
-        private void RichTextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
-        }
+        
 
         private void headerMessageBox_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -75,9 +75,11 @@ namespace NapierBankingService
             }
         }
 
-        private void messageBody_TextChanged(object sender, TextChangedEventArgs e)
+        private void End_Session(object sender, RoutedEventArgs e)
         {
-
+            Results Results = new Results(app);
+            this.Close();
+            Results.Show();
         }
     }
 }
