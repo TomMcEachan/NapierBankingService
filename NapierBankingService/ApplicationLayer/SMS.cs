@@ -14,7 +14,7 @@ namespace NapierBankingService.ApplicationLayer
         
         public SMS(string messageHeader, string messageBody, char messageType, string sender) : base(messageHeader, messageBody, messageType, sender)
         {
-
+            PhoneNumber = sender;
         }
 
         public SMS() { }

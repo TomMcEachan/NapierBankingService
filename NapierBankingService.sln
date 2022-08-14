@@ -5,7 +5,7 @@ VisualStudioVersion = 17.2.32630.192
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NapierBankingService", "NapierBankingService\NapierBankingService.csproj", "{89483ECE-AFD4-4C2D-AE48-2BB5DADDEC5E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NapierUnitTests", "NapierUnitTests\NapierUnitTests.csproj", "{9A305D93-D838-4D59-AE18-A3532DD71620}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NapierUnitTests", "NapierUnitTests\NapierUnitTests.csproj", "{9A305D93-D838-4D59-AE18-A3532DD71620}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

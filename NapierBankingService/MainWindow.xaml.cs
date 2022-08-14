@@ -46,7 +46,9 @@ namespace NapierBankingService
                 }
             }
               
+#pragma warning disable CS8604 // Possible null reference argument.
             app.ProcessSubmission(Header, Body);   
+#pragma warning restore CS8604 // Possible null reference argument.
         }
 
         

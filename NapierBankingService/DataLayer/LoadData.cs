@@ -141,7 +141,9 @@ namespace NapierBankingService.DataLayer
                 {
                     contents = File.ReadAllText(file);
                     ApplicationLayer.Tweet deserializedTweet = JsonConvert.DeserializeObject<ApplicationLayer.Tweet>(contents);
+#pragma warning disable CS8604 // Possible null reference argument.
                     tweetList.Add(deserializedTweet);
+#pragma warning restore CS8604 // Possible null reference argument.
                 }              
             }
 

@@ -166,12 +166,11 @@ namespace NapierBankingService.ApplicationLayer
 
                     break;
                 case 'T':
-
                     Tweet tweet = Tweet.ProcessTweet(body, header, type, abbreviations);
                     DataLayer.SaveData.SerializeTweet(tweet);
                     TweetList = DataLayer.LoadData.DeserializeTweets();
                     HashtagDict = Tweet.CollateHashtags(TweetList);
-
+                    MentionsList = Tweet.CollateMentions(TweetList);
                     break;
                 case 'E':
                     
