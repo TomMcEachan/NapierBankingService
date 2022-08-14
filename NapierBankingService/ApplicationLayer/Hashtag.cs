@@ -8,12 +8,17 @@ namespace NapierBankingService.ApplicationLayer
 {
     public class Hashtag
     {
-        public string hashtagText { get; set; }
+        private string _hashtag;
 
-        public Hashtag(string hashtagText)
+        public string Tag { get => _hashtag; set => _hashtag = value; }
+
+
+        public Hashtag (string hashtag)
         {
-           this.hashtagText = hashtagText;
+           Tag = hashtag;
         }
 
+        
     }
 }
+

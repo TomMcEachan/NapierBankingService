@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace NapierBankingService.ApplicationLayer
 {
@@ -45,7 +41,7 @@ namespace NapierBankingService.ApplicationLayer
             SMS s = new SMS();
 
             
-            body = Utilities.ExpandTextSpeak(body, abbreviations); // expands the body
+            body = Message.ExpandTextSpeak(body, abbreviations); // expands the body
             sender = s.DetectPhoneNumber(body); //detects the message sender
 
 

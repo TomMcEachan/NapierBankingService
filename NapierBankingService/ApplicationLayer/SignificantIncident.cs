@@ -29,6 +29,14 @@ namespace NapierBankingService.ApplicationLayer
 
         /* Methods for Detecting Incident */
 
+
+        /// <summary>
+        /// This method detects the kind of specific incident by matching the subject with the relevant word
+        /// </summary>
+        /// <param name="subject"></param>
+        /// <returns>
+        /// Returns a string of the incident type
+        /// </returns>
         public string DetectIncidentType (string subject)
         {
 
@@ -57,7 +65,7 @@ namespace NapierBankingService.ApplicationLayer
                 IncidentType = "Customer Attack";
             }
 
-            if (subject.Contains("Staff Aube"))
+            if (subject.Contains("Staff Abuse"))
             {
                 IncidentType = "Staff Abuse";
             }
@@ -90,6 +98,14 @@ namespace NapierBankingService.ApplicationLayer
             return IncidentType;
         }
 
+
+        /// <summary>
+        /// This method uses regex to detect a sort code
+        /// </summary>
+        /// <param name="subject"></param>
+        /// <returns>
+        /// A sort code
+        /// </returns>
         public string DetectSortCode(string subject)
         {
             Regex rx = new Regex(@"\b[0-9]{2}-?[0-9]{2}-?[0-9]{2}\b");
@@ -105,16 +121,29 @@ namespace NapierBankingService.ApplicationLayer
 
         }
 
-
-        public static SignificantIncident ProcessSignificantIncident(string body, string subject, string header, char type)
+        /// <summary>
+        /// This method processes the significant incident and adds the relevant information to an object
+        /// </summary>
+        /// <param name="body"></param>
+        /// <param name="subject"></param>
+        /// <param name="header"></param>
+        /// <param name="type"></param>
+        /// <returns>
+        /// A significant incident object with the relevant information
+        /// </returns>
+        public static SignificantIncident ProcessSignificantIncident(string body, string header, char type)
         {
             string emailAddress;
             string dateString;
             string incidentType;
             string sortCode;
-            List<string> QuarantineList = new List<string>();
+            string subject;
+            List<string> QuarantineList;
 
             SignificantIncident sig = new SignificantIncident();
+
+            subject = sig.DetectSubjectLine(body);
+
             incidentType = sig.DetectIncidentType(subject);
             sortCode = sig.DetectSortCode(subject);
             emailAddress = sig.DetectEmailAddress(body); //detects the email address from the body
@@ -125,6 +154,44 @@ namespace NapierBankingService.ApplicationLayer
             SignificantIncident newMessage = new SignificantIncident(sortCode, incidentType, header, body, type, emailAddress, subject, dateString);
             return newMessage;
         }
+
+
+        /// <summary>
+        /// This method checks an email subject line to see if the email can be considered a significant incident
+        /// </summary>
+        /// <param name="subject"></param>
+        /// <returns>
+        /// True or False
+        /// </returns>
+        public static bool DetectIncident(string subject)
+        {
+            if (subject.Contains("SIR"))
+            {
+                return true;
+            }
+
+            else
+            {
+                return false;
+            }
+        }
+
+
+        public static Dictionary<string, string> CollateSignificantIncidents(List<SignificantIncident> sigs)
+        {
+             
+            Dictionary<string, string> incidents = new Dictionary<string, string>();   
+
+            foreach (SignificantIncident sig in sigs)
+            {
+                incidents.Add(sig.SortCode, sig.IncidentType);
+            }
+
+            return incidents;
+        }
+
+
+
 
 
 

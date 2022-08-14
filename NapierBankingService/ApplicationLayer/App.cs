@@ -1,47 +1,61 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace NapierBankingService.ApplicationLayer
 {
-    internal class App
+    public class App
     {
-        private Dictionary<string, int> HashtagDict;
-        private List<string> Mentions;
-        private List<string> MessageList;
-        private List<SignificantIncident> SIRList;
+        private Dictionary<string, int> hashtagDict;
+        private List<SignificantIncident> sirList;
+        private Dictionary<string, string> sirStringList;
+        private List<string> mentionsList;
         private Dictionary<string, string> abbreviations;
-        
-
+        private List<Tweet> tweetList;
         private char type;
-        
-
         private int smsTwitterLimit = 140;
         private int emailLimit = 1028;
 
         public int EmailLimit { get => emailLimit; set => emailLimit = value; }
         public int SmsTwitterLimit { get => smsTwitterLimit; set => smsTwitterLimit = value; }
         public Dictionary<string, string> Abbreviations { get => abbreviations; set => abbreviations = value; }
-
+        public List<Tweet> TweetList { get => tweetList; set => tweetList = value; }
+        public Dictionary<string, int> HashtagDict { get => hashtagDict; set => hashtagDict = value; }
+        public List<string> MentionsList { get => mentionsList; set => mentionsList = value; }
+        public List<SignificantIncident> SIRList { get => sirList; set => sirList = value; }
+        public Dictionary<string, string> SirStringList { get => sirStringList; set => sirStringList = value; }
 
 
 
         /// <summary>
-        /// 
+        /// This method is triggered on application start-up
+        /// </summary>
+        public void StartUp()
+        {
+            Abbreviations = DataLayer.LoadData.ReadTextWordsCSV();
+            DataLayer.LoadData.DeserializeEmails();
+            DataLayer.LoadData.DeserializeSMSs();
+            SIRList = DataLayer.LoadData.DeserializeSignificantIncidents();
+            TweetList = DataLayer.LoadData.DeserializeTweets();
+            HashtagDict = Tweet.CollateHashtags(TweetList);
+            MentionsList = Tweet.CollateMentions(TweetList);
+            SirStringList = SignificantIncident.CollateSignificantIncidents(SIRList);
+        }
+
+
+
+        /// <summary>
+        /// This method processes the message that is added by the user through the GUI
         /// </summary>
         /// <param name="header"></param>
         /// <param name="body"></param>
         /// <param name="subject"></param>
         /// <param name="abbreviations"></param>
-        public void ProcessSubmission(string header, string body, string subject)
+        public void ProcessSubmission(string header, string body)
         {
             type = ProcessHeader(header);
-            ProcessMessage(body, header, subject, type, abbreviations);           
+            ProcessMessage(body, header, type, abbreviations);           
         }
 
      
@@ -60,6 +74,8 @@ namespace NapierBankingService.ApplicationLayer
             type = DetectType(header);
             return type;
         }
+
+
 
         /// <summary>
         /// This method checks whether or not the user input is valid
@@ -137,7 +153,7 @@ namespace NapierBankingService.ApplicationLayer
         /// <param name="header"></param>
         /// <param name="subject"></param>
         /// <param name="type"></param>
-        public void ProcessMessage(string body, string header, string subject, char type, Dictionary<string, string> abbreviations)
+        public void ProcessMessage(string body, string header, char type, Dictionary<string, string> abbreviations)
         {
             bool incidentDetected;
             switch (type)
@@ -145,29 +161,58 @@ namespace NapierBankingService.ApplicationLayer
                 case 'S':
 
                     SMS sms = SMS.ProcessSMS(body, header, type, abbreviations);
+                    DataLayer.SaveData.SerializeSMS(sms);
+                    DataLayer.LoadData.DeserializeSMSs();
 
                     break;
                 case 'T':
 
+                    Tweet tweet = Tweet.ProcessTweet(body, header, type, abbreviations);
+                    DataLayer.SaveData.SerializeTweet(tweet);
+                    TweetList = DataLayer.LoadData.DeserializeTweets();
+                    HashtagDict = Tweet.CollateHashtags(TweetList);
 
                     break;
                 case 'E':
                     
-                    incidentDetected = Utilities.DetectIncident(subject); //detects whether or not the email is a significant incident (true or false)
+                    incidentDetected = SignificantIncident.DetectIncident(body); //detects whether or not the email is a significant incident (true or false)
                     
                     if (incidentDetected)
                     {
-                        SignificantIncident significantIncident = SignificantIncident.ProcessSignificantIncident(body, subject, header, type);
-                        
+                        SignificantIncident significantIncident = SignificantIncident.ProcessSignificantIncident(body, header, type);
+                        DataLayer.SaveData.SerializeSignificantIncident(significantIncident);
+                        SIRList = DataLayer.LoadData.DeserializeSignificantIncidents();
+                        SirStringList = SignificantIncident.CollateSignificantIncidents(SIRList);
                     }
                     
                     if (!incidentDetected)
                     {
-                        Email email = Email.ProcessEmail(body, subject, header, type);
-                        
+                        Email email = Email.ProcessEmail(body, header, type);
+                        DataLayer.SaveData.SerializeEmail(email);
                     }
                     break;
-            }      
+            }
+            
+        }
+
+
+        public Tuple<string, List<string>, string> EndSession(Dictionary<string, int> trendingList, List<string> mentions, Dictionary<string, string> sigs)
+        {
+             
+            //Creates a string to be printed in the end of session window for the trending hashtags
+            if(trendingList != null)
+            {
+                var trendingHashtags = trendingList.Select(kvp => string.Format("Hashtag: {0} ---- Times Used: {1}", kvp.Key, kvp.Value, kvp.Value));
+                var trending = string.Join(Environment.NewLine, trendingHashtags);
+
+                var sigIncidents = sigs.Select(kvp => string.Format("Incident Type: {0} ---- SortCode: {1}", kvp.Key, kvp.Value, kvp.Value));
+                var sigList = string.Join(Environment.NewLine, sigIncidents);
+                return new Tuple<string, List<string>, string>(trending, mentions, sigList);
+            }
+
+
+            return new Tuple<string, List<string>, string>("empty", mentions, "empty");
+
         }
 
 
