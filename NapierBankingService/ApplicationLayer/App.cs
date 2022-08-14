@@ -9,7 +9,7 @@ namespace NapierBankingService.ApplicationLayer
     {
         private Dictionary<string, int> hashtagDict;
         private List<SignificantIncident> sirList;
-        private List<string> sirStringList;
+        private Dictionary<string, string> sirStringList;
         private List<string> mentionsList;
         private Dictionary<string, string> abbreviations;
         private List<Tweet> tweetList;
@@ -24,7 +24,7 @@ namespace NapierBankingService.ApplicationLayer
         public Dictionary<string, int> HashtagDict { get => hashtagDict; set => hashtagDict = value; }
         public List<string> MentionsList { get => mentionsList; set => mentionsList = value; }
         public List<SignificantIncident> SIRList { get => sirList; set => sirList = value; }
-        public List<string> SirStringList { get => sirStringList; set => sirStringList = value; }
+        public Dictionary<string, string> SirStringList { get => sirStringList; set => sirStringList = value; }
 
 
 
@@ -196,15 +196,22 @@ namespace NapierBankingService.ApplicationLayer
         }
 
 
-        public Tuple<string, List<string>, List<string>> EndSession(Dictionary<string, int> trendingList, List<string> mentions, List<string> sigs)
+        public Tuple<string, List<string>, string> EndSession(Dictionary<string, int> trendingList, List<string> mentions, Dictionary<string, string> sigs)
         {
              
             //Creates a string to be printed in the end of session window for the trending hashtags
-            var trendingHashtags = trendingList.Select(kvp => string.Format("Hashtag: {0} ---- Times Used: {1}", kvp.Key, kvp.Value, kvp.Value));
-            var trending = string.Join(Environment.NewLine, trendingHashtags);
+            if(trendingList != null)
+            {
+                var trendingHashtags = trendingList.Select(kvp => string.Format("Hashtag: {0} ---- Times Used: {1}", kvp.Key, kvp.Value, kvp.Value));
+                var trending = string.Join(Environment.NewLine, trendingHashtags);
 
-         
-            return new Tuple<string, List<string>, List<string>>(trending, mentions, sigs);
+                var sigIncidents = sigs.Select(kvp => string.Format("Incident Type: {0} ---- SortCode: {1}", kvp.Key, kvp.Value, kvp.Value));
+                var sigList = string.Join(Environment.NewLine, sigIncidents);
+                return new Tuple<string, List<string>, string>(trending, mentions, sigList);
+            }
+
+
+            return new Tuple<string, List<string>, string>("empty", mentions, "empty");
 
         }
 

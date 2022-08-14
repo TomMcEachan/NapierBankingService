@@ -13,17 +13,21 @@ namespace NapierBankingService
         {
             InitializeComponent();
         
-            Tuple<string, List<string>, List<string>> tuple = app.EndSession(app.HashtagDict, app.MentionsList, app.SirStringList);
+            Tuple<string, List<string>, string> tuple = app.EndSession(app.HashtagDict, app.MentionsList, app.SirStringList);
 
             string trendingList = tuple.Item1;
             List<string> mentions = tuple.Item2;
-            List<string> sigs = tuple.Item3;
+            string sigs = tuple.Item3;
 
             
 
-            TrendingTextBox.Text = trendingList;
-            SignificantIncidentsTextBox.Text = String.Join(Environment.NewLine, sigs);
-            MentionsTextBox.Text = String.Join(Environment.NewLine, mentions);
+            if(trendingList != null && mentions != null && sigs != null)
+            {
+                TrendingTextBox.Text = trendingList;
+                SignificantIncidentsTextBox.Text = String.Join(Environment.NewLine, sigs);
+                MentionsTextBox.Text = String.Join(Environment.NewLine, mentions);
+            }
+            
         }
 
        

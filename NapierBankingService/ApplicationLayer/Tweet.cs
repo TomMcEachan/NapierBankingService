@@ -142,18 +142,21 @@ namespace NapierBankingService.ApplicationLayer
         {
             List<Hashtag> hashtags = new List<Hashtag>();
             List<string> allTags = new List<string>();
-                
-            foreach (Tweet tweet in tweets)
+            
+            
+            if (tweets != null)
             {
-                hashtags.Add(tweet.HashTags.ElementAt(0));
+                foreach (Tweet tweet in tweets)
+                {
+                    hashtags.Add(tweet.HashTags.ElementAt(0));
+                }
+
+                foreach (Hashtag tag in hashtags)
+                {
+                    allTags.Add(tag.Tag);
+                }
             }
-
-            foreach (Hashtag tag in hashtags)
-            {
-                allTags.Add(tag.Tag);
-            }
-
-
+            
             var query = allTags.GroupBy(x => x)
                                 .ToDictionary(y => y.Key, y => y.Count())
                                 .OrderByDescending(z => z.Value);

@@ -112,7 +112,7 @@ namespace NapierBankingService.ApplicationLayer
 
         public string DetectSubjectLine(string body)
         {
-            Regex rx = new Regex("(Subject:) +.*");
+            Regex rx = new Regex("(Subject:)+.*?(?=Body:)");
 
             Match match = rx.Match(body);
 
@@ -133,7 +133,7 @@ namespace NapierBankingService.ApplicationLayer
             string emailAddress;
             string dateString;
             string subject;
-            List<string> QuarantineList = new List<string>();
+            List<string> QuarantineList;
 
             /* New Instance of Empty Email object*/
             Email e = new Email();
@@ -141,6 +141,7 @@ namespace NapierBankingService.ApplicationLayer
             subject = e.DetectSubjectLine(body);
             emailAddress = e.DetectEmailAddress(body); //detects the email address from the body
             dateString = e.DetectDate(body); //detects the date from the subject line
+            body = e.DetectBodyText(body);
             QuarantineList = e.DetectURL(body);
             body = e.QuarantineURL(body, QuarantineList);
             Email email = new Email(header, body, type, subject, emailAddress, dateString);
@@ -151,6 +152,21 @@ namespace NapierBankingService.ApplicationLayer
 
 
 
+        public string DetectBodyText(string body)
+        {
+            Regex rx = new Regex("(Body:)+.*");
+
+            Match match = rx.Match(body);
+
+            string bodyText = match.Value;
+
+            return bodyText;
+        }
+
+
+
 
     }
 }
+
+

@@ -65,7 +65,7 @@ namespace NapierBankingService.ApplicationLayer
                 IncidentType = "Customer Attack";
             }
 
-            if (subject.Contains("Staff Aube"))
+            if (subject.Contains("Staff Abuse"))
             {
                 IncidentType = "Staff Abuse";
             }
@@ -142,7 +142,7 @@ namespace NapierBankingService.ApplicationLayer
 
             SignificantIncident sig = new SignificantIncident();
 
-           subject = sig.DetectSubjectLine(body);
+            subject = sig.DetectSubjectLine(body);
 
             incidentType = sig.DetectIncidentType(subject);
             sortCode = sig.DetectSortCode(subject);
@@ -177,24 +177,17 @@ namespace NapierBankingService.ApplicationLayer
         }
 
 
-        public static List<string> CollateSignificantIncidents(List<SignificantIncident> sigs)
+        public static Dictionary<string, string> CollateSignificantIncidents(List<SignificantIncident> sigs)
         {
-            
-            List<SignificantIncident> Sigs = new List<SignificantIncident>();
-            List<string> stringSigs = new List<string>();
+             
+            Dictionary<string, string> incidents = new Dictionary<string, string>();   
 
             foreach (SignificantIncident sig in sigs)
             {
-                Sigs.Add(sig);
+                incidents.Add(sig.SortCode, sig.IncidentType);
             }
 
-            foreach (SignificantIncident sig in Sigs)
-            {
-                stringSigs.Add(sig.IncidentType);
-            }
-
-
-            return stringSigs;
+            return incidents;
         }
 
 

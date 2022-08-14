@@ -13,7 +13,7 @@ namespace NapierBankingService
     /// </summary>
     public partial class MainWindow : Window
     {
-        ApplicationLayer.App app;
+        ApplicationLayer.App app = new ApplicationLayer.App();
         private string header;
         private string body;
         
@@ -26,7 +26,6 @@ namespace NapierBankingService
         public MainWindow()
         {
             InitializeComponent();
-            app = new ApplicationLayer.App();
             app.StartUp();
         }
         
@@ -76,8 +75,7 @@ namespace NapierBankingService
         private void Upload_File_Button_Click(object sender, RoutedEventArgs e)
         {
             Microsoft.Win32.OpenFileDialog ofd = new Microsoft.Win32.OpenFileDialog();
-            app = new ApplicationLayer.App();
-
+            
             bool? response = ofd.ShowDialog();
 
             if(response == true)
