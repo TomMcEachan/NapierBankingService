@@ -7,14 +7,14 @@ namespace NapierBankingService.ApplicationLayer
     public class SMS : Message
     {
 
-        private string phoneNumber;
-        public string PhoneNumber { get => phoneNumber; set => phoneNumber = value; }
+        private string? phoneNumber;
+        public string? PhoneNumber { get => phoneNumber; set => phoneNumber = value; }
 
 
         
         public SMS(string messageHeader, string messageBody, char messageType, string sender) : base(messageHeader, messageBody, messageType, sender)
         {
-
+            PhoneNumber = sender;
         }
 
         public SMS() { }
@@ -62,7 +62,7 @@ namespace NapierBankingService.ApplicationLayer
         /// </returns>
         public string DetectPhoneNumber (string body)
         {
-            Regex rx = new Regex(@"\+(9[976]\d|8[987530]\d|6[987]\d|5[90]\d|42\d|3[875]\d|2[98654321]\d|9[8543210]|8[6421]|6[6543210]|5[87654321]|4[987654310]|3[9643210]|2[70]|7|1)\d{1,14}$");
+            Regex rx = new Regex(@"((\+[ /]*)?(\d[ /]*){10,11}\d)");
 
             MatchCollection matches = rx.Matches(body);
 

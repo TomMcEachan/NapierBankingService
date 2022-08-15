@@ -10,12 +10,12 @@ namespace NapierBankingService.ApplicationLayer
 {
     public class SignificantIncident : Email
     {
-        private string _sortCode;
-        private string _incidentType;
-        List<string> incidentTypes = new List<string>();
+        private string? _sortCode;
+        private string? _incidentType;
+        
 
-        public string IncidentType { get => _incidentType; set => _incidentType = value; }
-        public string SortCode { get => _sortCode; set => _sortCode = value; }
+        public string? IncidentType { get => _incidentType; set => _incidentType = value; }
+        public string? SortCode { get => _sortCode; set => _sortCode = value; }
 
         public SignificantIncident (string sortCode, string incidentType, string messageHeader, string messageBody, char messageType, string sender, string messageSubject, string date) : base (messageHeader, messageBody, messageType, sender,  messageSubject, date)
         {
