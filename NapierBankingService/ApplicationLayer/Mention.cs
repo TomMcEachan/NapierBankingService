@@ -4,7 +4,7 @@
     {
         private string _mention;
 
-        public string UserID { get => _mention; set => _mention = value; }
+        public string?UserID { get => _mention; set => _mention = value; }
 
 
         public Mention(string mention)

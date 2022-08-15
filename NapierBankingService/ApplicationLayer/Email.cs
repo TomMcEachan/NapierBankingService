@@ -40,7 +40,7 @@ namespace NapierBankingService.ApplicationLayer
         /// </returns>
         public string DetectDate(string subject)
         {
-            Regex rx = new("(SIR)\\s*([0-2][1-9]|3[0-1])\\/(0[1-9]|1[0-2])\\/([0-9][0-9])");
+            Regex rx = new(@"[0-1]?[0-9]/[0-9]{2}/[0-9]{4}");
 
             MatchCollection matches = rx.Matches(subject);
 
@@ -59,6 +59,7 @@ namespace NapierBankingService.ApplicationLayer
                 return "no date";
             }
         }
+
 
         /// <summary>
         /// This method takes the body added by the user and returns the email address detected
@@ -110,6 +111,10 @@ namespace NapierBankingService.ApplicationLayer
             return list;
         }
 
+
+
+
+
         /// <summary>
         /// This method takes the body added by the user, and a list of URLs to be quarantined and removes the URLs from the body
         /// </summary>
@@ -140,6 +145,20 @@ namespace NapierBankingService.ApplicationLayer
 
         }
 
+
+        public string DetectBodyText(string body)
+        {
+            Regex rx = new("(Body:)+.*");
+
+            Match match = rx.Match(body);
+
+            string bodyText = match.Value;
+
+            return bodyText;
+        }
+
+
+
         /// <summary>
         /// This method works through the steps to collect the necessary information about an email 
         /// </summary>
@@ -158,7 +177,7 @@ namespace NapierBankingService.ApplicationLayer
 
             subject = e.DetectSubjectLine(body);
             emailAddress = e.DetectEmailAddress(body); //detects the email address from the body
-            dateString = e.DetectDate(body); //detects the date from the subject line
+            dateString = e.DetectDate(subject); //detects the date from the subject line
             body = e.DetectBodyText(body);
             QuarantineList = e.DetectURL(body);
             body = e.QuarantineURL(body, QuarantineList);
@@ -170,16 +189,7 @@ namespace NapierBankingService.ApplicationLayer
 
 
 
-        public string DetectBodyText(string body)
-        {
-            Regex rx = new("(Body:)+.*");
-
-            Match match = rx.Match(body);
-
-            string bodyText = match.Value;
-
-            return bodyText;
-        }
+       
 
 
 
