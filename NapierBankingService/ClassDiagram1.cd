@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="NapierBankingService.MainWindow" BaseTypeListCollapsed="true">
+    <Position X="19.75" Y="1.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>FAAAAAQAAAAAAAAAAABJAAAAAQAAAAAAACBAIAAAAAA=</HashCode>
+      <FileName>MainWindow.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="NapierBankingService.Results" BaseTypeListCollapsed="true">
+    <Position X="20.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Results.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.381" Collapsed="true" />
+  </Class>
+  <Class Name="NapierBankingService.ApplicationLayer.App">
+    <Position X="20.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>wAMAgEAQAoCAgAIAAAACAAIAAgAHIAEAAAAAAAAFAAA=</HashCode>
+      <FileName>ApplicationLayer\App.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NapierBankingService.ApplicationLayer.Email">
+    <Position X="0.5" Y="1.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>CAAABAAABAAAAAACAIAAAgCAAgBgAAASIAIAAAAAAAA=</HashCode>
+      <FileName>ApplicationLayer\Email.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NapierBankingService.ApplicationLayer.Hashtag">
+    <Position X="8" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ApplicationLayer\Hashtag.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NapierBankingService.ApplicationLayer.Mention">
+    <Position X="7.25" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ApplicationLayer\Mention.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NapierBankingService.ApplicationLayer.Message">
+    <Position X="19.5" Y="1.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAEAAAAEQAAAAAAAIAAAAAAAAAAAAIEAIAAIAAA=</HashCode>
+      <FileName>ApplicationLayer\Message.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NapierBankingService.ApplicationLayer.SignificantIncident">
+    <Position X="0.5" Y="6.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEAAAAAACAAIAAgAAAAgAAAAAIAAAQAAAEAA=</HashCode>
+      <FileName>ApplicationLayer\SignificantIncident.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NapierBankingService.ApplicationLayer.SMS">
+    <Position X="5.25" Y="1.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAACAAAAAQAAAAEAAAAAAAAAACAAAAAA=</HashCode>
+      <FileName>ApplicationLayer\SMS.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NapierBankingService.ApplicationLayer.Tweet">
+    <Position X="4" Y="1" Width="3.5" />
+    <TypeIdentifier>
+      <HashCode>EIAgAAAAAAQAAAAAAEAAgAAAAAAAAACAAAAQAIAAAAA=</HashCode>
+      <FileName>ApplicationLayer\Tweet.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NapierBankingService.DataLayer.LoadData">
+    <Position X="13.25" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAIAQAAAAAAAAQIAAAAABAAAAAAAAAAAgEAAA=</HashCode>
+      <FileName>DataLayer\LoadData.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NapierBankingService.DataLayer.SaveData">
+    <Position X="15" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAABAAAAAAIAAAAAAAAAAAAAACAAAAAAAAAAAAABA=</HashCode>
+      <FileName>DataLayer\SaveData.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

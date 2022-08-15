@@ -8,20 +8,21 @@ namespace NapierBankingService.ApplicationLayer
     public class Email : Message
     {
        
-        private string messageSubject;
-        private string dateString;
-        private string emailAddress;
-        private string subject;
-        
+        private string? messageSubject;
+        private string? dateString;
+        private string? emailAddress;
+        private string? subject;
 
-        protected string MessageSubject { get => messageSubject; set => messageSubject = value; }
-        public string Subject { get => subject; set => subject = value; }
+        protected string? MessageSubject { get => messageSubject; set => messageSubject = value; }
+        public string? Subject { get => subject; set => subject = value; }
+        public string? DateString { get => dateString; set => dateString = value; }
 
 
         /* Email Constructor */
         public Email(string messageHeader, string messageBody, char messageType, string subject, string sender, string date) : base(messageHeader, messageBody, messageType, sender)
         {
             Subject = subject;
+            DateString = date;
         }
 
         /* Empty Email Constructor */
@@ -39,16 +40,24 @@ namespace NapierBankingService.ApplicationLayer
         /// </returns>
         public string DetectDate(string subject)
         {
-            Regex rx = new Regex("(SIR)\\s*([0-2][1-9]|3[0-1])\\/(0[1-9]|1[0-2])\\/([0-9][0-9])");
+            Regex rx = new("(SIR)\\s*([0-2][1-9]|3[0-1])\\/(0[1-9]|1[0-2])\\/([0-9][0-9])");
 
             MatchCollection matches = rx.Matches(subject);
 
             foreach (Match match in matches)
             {
-                dateString = match.Value;
+                DateString = match.Value;
             }
 
-            return dateString;
+            if (DateString != null)
+            {
+                return DateString;
+            }
+            
+            else
+            {
+                return "no date";
+            }
         }
 
         /// <summary>
@@ -60,7 +69,7 @@ namespace NapierBankingService.ApplicationLayer
         /// </returns>
         public string DetectEmailAddress(string body)
         {
-            Regex rx = new Regex("[a-zA-Z0-9.()]{1,}@[a-zA-Z0-9()]{1,}.[a-zA-Z.(_)]{1,}");
+            Regex rx = new("[a-zA-Z0-9.()]{1,}@[a-zA-Z0-9()]{1,}.[a-zA-Z.(_)]{1,}");
 
             MatchCollection matches = rx.Matches(body);
 
@@ -69,7 +78,16 @@ namespace NapierBankingService.ApplicationLayer
                 emailAddress = match.Value;
             }
 
-            return emailAddress;
+            if (emailAddress != null)
+            {
+                return emailAddress;
+            }
+
+            else
+            {
+                return "no email";
+            }
+      
         }
 
         /// <summary>
@@ -83,7 +101,7 @@ namespace NapierBankingService.ApplicationLayer
         {
             List<string> list;
 
-            Regex rx = new Regex(@"((http|ftp|https|HTTPS|HTTP|FTP):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?)");
+            Regex rx = new(@"((http|ftp|https|HTTPS|HTTP|FTP):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?)");
 
             MatchCollection matches = rx.Matches(body);
 
@@ -112,7 +130,7 @@ namespace NapierBankingService.ApplicationLayer
 
         public string DetectSubjectLine(string body)
         {
-            Regex rx = new Regex("(Subject:)+.*?(?=Body:)");
+            Regex rx = new("(Subject:)+.*?(?=Body:)");
 
             Match match = rx.Match(body);
 
@@ -136,7 +154,7 @@ namespace NapierBankingService.ApplicationLayer
             List<string> QuarantineList;
 
             /* New Instance of Empty Email object*/
-            Email e = new Email();
+            Email e = new();
 
             subject = e.DetectSubjectLine(body);
             emailAddress = e.DetectEmailAddress(body); //detects the email address from the body
@@ -144,7 +162,7 @@ namespace NapierBankingService.ApplicationLayer
             body = e.DetectBodyText(body);
             QuarantineList = e.DetectURL(body);
             body = e.QuarantineURL(body, QuarantineList);
-            Email email = new Email(header, body, type, subject, emailAddress, dateString);
+            Email email = new(header, body, type, subject, emailAddress, dateString);
 
             return email;
 
@@ -154,7 +172,7 @@ namespace NapierBankingService.ApplicationLayer
 
         public string DetectBodyText(string body)
         {
-            Regex rx = new Regex("(Body:)+.*");
+            Regex rx = new("(Body:)+.*");
 
             Match match = rx.Match(body);
 

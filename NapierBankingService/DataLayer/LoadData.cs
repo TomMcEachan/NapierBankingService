@@ -32,6 +32,13 @@ namespace NapierBankingService.DataLayer
             return dict;
         }
 
+        public static void createDirectories(string location)
+        {
+            Directory.CreateDirectory(location);
+        }
+
+
+
         /// <summary>
         /// This reads json from file ans deserializes it into an Email object for use in the program
         /// </summary>
@@ -41,7 +48,10 @@ namespace NapierBankingService.DataLayer
         public static List<ApplicationLayer.Email> DeserializeEmails()
         {
             string location = AppDomain.CurrentDomain.BaseDirectory + @"\NapierBankingSystem\Emails";
-            string contents = "hello";
+            
+            createDirectories(location);
+
+            string contents;
             bool empty;
             List <ApplicationLayer.Email> emailList = new List<ApplicationLayer.Email>();
 
@@ -70,6 +80,9 @@ namespace NapierBankingService.DataLayer
         public static List<ApplicationLayer.SMS> DeserializeSMSs()
         {
             string location = AppDomain.CurrentDomain.BaseDirectory + @"\NapierBankingSystem\SMS";
+
+            createDirectories(location);
+
             string contents;
             bool empty;
             List<ApplicationLayer.SMS> smsList = new List<ApplicationLayer.SMS>();
@@ -99,6 +112,7 @@ namespace NapierBankingService.DataLayer
         public static List<ApplicationLayer.SignificantIncident> DeserializeSignificantIncidents()
         {
             string location = AppDomain.CurrentDomain.BaseDirectory + @"\NapierBankingSystem\Significant-Incidents";
+            createDirectories(location);
             string contents;
             bool empty;
             List<ApplicationLayer.SignificantIncident> sigList = new List<ApplicationLayer.SignificantIncident>();
@@ -129,6 +143,7 @@ namespace NapierBankingService.DataLayer
         public static List<ApplicationLayer.Tweet> DeserializeTweets()
         {
             string location = AppDomain.CurrentDomain.BaseDirectory + @"\NapierBankingSystem\Tweets";
+            createDirectories(location);
             string contents;
             bool empty;
             List<ApplicationLayer.Tweet> tweetList = new List<ApplicationLayer.Tweet>();
@@ -141,9 +156,9 @@ namespace NapierBankingService.DataLayer
                 {
                     contents = File.ReadAllText(file);
                     ApplicationLayer.Tweet deserializedTweet = JsonConvert.DeserializeObject<ApplicationLayer.Tweet>(contents);
-#pragma warning disable CS8604 // Possible null reference argument.
+
                     tweetList.Add(deserializedTweet);
-#pragma warning restore CS8604 // Possible null reference argument.
+
                 }              
             }
 

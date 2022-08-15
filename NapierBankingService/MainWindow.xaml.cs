@@ -14,13 +14,13 @@ namespace NapierBankingService
     public partial class MainWindow : Window
     {
         ApplicationLayer.App app = new ApplicationLayer.App();
-        private string header;
-        private string body;
+        private string? header;
+        private string? body;
         
         
 
-        public string Header { get => header; set => header = value; }
-        public string Body { get => body; set => body = value; }
+        public string? Header { get => header; set => header = value; }
+        public string? Body { get => body; set => body = value; }
         
 
         public MainWindow()
@@ -29,7 +29,10 @@ namespace NapierBankingService
             app.StartUp();
         }
         
-       
+        private void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
 
         private void Submit_Click(object sender, RoutedEventArgs e)
         {
@@ -46,9 +49,8 @@ namespace NapierBankingService
                 }
             }
               
-#pragma warning disable CS8604 // Possible null reference argument.
             app.ProcessSubmission(Header, Body);   
-#pragma warning restore CS8604 // Possible null reference argument.
+
         }
 
         

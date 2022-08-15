@@ -8,17 +8,31 @@
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <UseWindowsForms>True</UseWindowsForms>
     <ApplicationIcon>favicon.ico</ApplicationIcon>
+    <PackageIcon>Logo.png</PackageIcon>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <Optimize>True</Optimize>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Emails\**" />
     <Compile Remove="MessageOutputs\**" />
+    <EmbeddedResource Remove="Emails\**" />
     <EmbeddedResource Remove="MessageOutputs\**" />
+    <None Remove="Emails\**" />
     <None Remove="MessageOutputs\**" />
+    <Page Remove="Emails\**" />
     <Page Remove="MessageOutputs\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AdditionalFiles Remove="Emails\hello.txt" />
   </ItemGroup>
 
   <ItemGroup>
@@ -34,6 +48,13 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="favicon.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="C:\Users\tomam\Downloads\Logo.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
