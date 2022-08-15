@@ -10,7 +10,6 @@
             Email email = new Email();
             string date = "10/09/1997";
             
-
             //Act
             string expectedResult = "10/09/1997";
             string actualResult = email.DetectDate(date);
