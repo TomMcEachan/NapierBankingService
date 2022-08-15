@@ -8,9 +8,9 @@ namespace NapierBankingService.ApplicationLayer
 {
     public class Hashtag
     {
-        private string _hashtag;
+        private string? _hashtag;
 
-        public string Tag { get => _hashtag; set => _hashtag = value; }
+        public string? Tag { get => _hashtag; set => _hashtag = value; }
 
 
         public Hashtag (string hashtag)

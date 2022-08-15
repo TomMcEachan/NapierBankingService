@@ -7,8 +7,8 @@ namespace NapierBankingService.ApplicationLayer
     public class SMS : Message
     {
 
-        private string phoneNumber;
-        public string PhoneNumber { get => phoneNumber; set => phoneNumber = value; }
+        private string? phoneNumber;
+        public string? PhoneNumber { get => phoneNumber; set => phoneNumber = value; }
 
 
         

@@ -7,24 +7,24 @@ namespace NapierBankingService.ApplicationLayer
 {
     public class App
     {
-        private Dictionary<string, int> hashtagDict;
-        private List<SignificantIncident> sirList;
-        private Dictionary<string, string> sirStringList;
-        private List<string> mentionsList;
-        private Dictionary<string, string> abbreviations;
-        private List<Tweet> tweetList;
+        private Dictionary<string, int>? hashtagDict;
+        private List<SignificantIncident>? sirList;
+        private Dictionary<string, string>? sirStringList;
+        private List<string>? mentionsList;
+        private Dictionary<string, string>? abbreviations;
+        private List<Tweet>? tweetList;
         private char type;
         private int smsTwitterLimit = 140;
         private int emailLimit = 1028;
 
         public int EmailLimit { get => emailLimit; set => emailLimit = value; }
         public int SmsTwitterLimit { get => smsTwitterLimit; set => smsTwitterLimit = value; }
-        public Dictionary<string, string> Abbreviations { get => abbreviations; set => abbreviations = value; }
-        public List<Tweet> TweetList { get => tweetList; set => tweetList = value; }
-        public Dictionary<string, int> HashtagDict { get => hashtagDict; set => hashtagDict = value; }
-        public List<string> MentionsList { get => mentionsList; set => mentionsList = value; }
-        public List<SignificantIncident> SIRList { get => sirList; set => sirList = value; }
-        public Dictionary<string, string> SirStringList { get => sirStringList; set => sirStringList = value; }
+        public Dictionary<string, string>? Abbreviations { get => abbreviations; set => abbreviations = value; }
+        public List<Tweet>? TweetList { get => tweetList; set => tweetList = value; }
+        public Dictionary<string, int>? HashtagDict { get => hashtagDict; set => hashtagDict = value; }
+        public List<string>? MentionsList { get => mentionsList; set => mentionsList = value; }
+        public List<SignificantIncident>? SIRList { get => sirList; set => sirList = value; }
+        public Dictionary<string, string>? SirStringList { get => sirStringList; set => sirStringList = value; }
 
 
 

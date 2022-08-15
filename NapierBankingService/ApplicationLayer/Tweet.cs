@@ -9,11 +9,11 @@ namespace NapierBankingService.ApplicationLayer
     [Serializable]
     public class Tweet : Message
     {
-        private List<Hashtag> _hashTags;
-        private List<Mention> _mentions;
+        private List<Hashtag>? _hashTags;
+        private List<Mention>? _mentions;
 
-        public List<Hashtag> HashTags { get => _hashTags; set => _hashTags = value; }
-        public List<Mention> Mentions { get => _mentions; set => _mentions = value; }
+        public List<Hashtag>? HashTags { get => _hashTags; set => _hashTags = value; }
+        public List<Mention>? Mentions { get => _mentions; set => _mentions = value; }
 
         public Tweet(string messageHeader, string messageBody, char messageType, string sender, List<Hashtag> hashTags, List<Mention> mentions) : base(messageHeader, messageBody, messageType, sender)
         {
@@ -138,6 +138,14 @@ namespace NapierBankingService.ApplicationLayer
 
         }
 
+
+        /// <summary>
+        /// This method takes a tweet list and collates a list of hashtags and adds them to a dictionary
+        /// </summary>
+        /// <param name="tweets"></param>
+        /// <returns>
+        /// A dictionary of the trending hashtags
+        /// </returns>
         public static Dictionary<string, int> CollateHashtags(List<Tweet> tweets)
         {
             List<Hashtag> hashtags = new List<Hashtag>();
@@ -177,6 +185,14 @@ namespace NapierBankingService.ApplicationLayer
             return dict;
         }
      
+
+        /// <summary>
+        /// This method takes a list of tweets and collates the mentions together
+        /// </summary>
+        /// <param name="tweets"></param>
+        /// <returns>
+        /// A string list of mentions
+        /// </returns>
         public static List<string> CollateMentions(List<Tweet> tweets)
         {
             List<Mention> IDs = new List<Mention>();
