@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 
@@ -31,16 +32,25 @@ namespace NapierBankingService.ApplicationLayer
         /// <summary>
         /// This method is triggered on application start-up
         /// </summary>
-        public void StartUp()
+        public bool StartUp()
         {
-            Abbreviations = DataLayer.LoadData.ReadTextWordsCSV();
-            DataLayer.LoadData.DeserializeEmails();
-            DataLayer.LoadData.DeserializeSMSs();
-            SIRList = DataLayer.LoadData.DeserializeSignificantIncidents();
-            TweetList = DataLayer.LoadData.DeserializeTweets();
-            HashtagDict = Tweet.CollateHashtags(TweetList);
-            MentionsList = Tweet.CollateMentions(TweetList);
-            SirStringList = SignificantIncident.CollateSignificantIncidents(SIRList);
+            try
+            {
+                Abbreviations = DataLayer.LoadData.ReadTextWordsCSV();
+                DataLayer.LoadData.DeserializeEmails();
+                DataLayer.LoadData.DeserializeSMSs();
+                SIRList = DataLayer.LoadData.DeserializeSignificantIncidents();
+                TweetList = DataLayer.LoadData.DeserializeTweets();
+                HashtagDict = Tweet.CollateHashtags(TweetList);
+                MentionsList = Tweet.CollateMentions(TweetList);
+                SirStringList = SignificantIncident.CollateSignificantIncidents(SIRList);
+
+                return true;
+            } 
+            catch
+            {
+                return false;
+            }       
         }
 
 
@@ -52,10 +62,12 @@ namespace NapierBankingService.ApplicationLayer
         /// <param name="body"></param>
         /// <param name="subject"></param>
         /// <param name="abbreviations"></param>
-        public void ProcessSubmission(string header, string body)
+        public char ProcessSubmission(string header, string body)
         {
+            
             type = ProcessHeader(header);
-            ProcessMessage(body, header, type, abbreviations);           
+            ProcessMessage(body, header, type, abbreviations);    
+            return type;
         }
 
      
@@ -88,25 +100,18 @@ namespace NapierBankingService.ApplicationLayer
 
             if (header.Length > 10)
             {
-                MessageBox.Show("Header is too long - please input a valid message header", "Error" );
                 valid = false;
             }
-
             if (header.Length < 10)
-            {
-                MessageBox.Show("Header is not long enough - please input a valid message header", "Error");
+            {  
                 valid = false;
             }
-
             if (!header.Contains("S") && !header.Contains("E") && !header.Contains("T"))
-            {
-                MessageBox.Show("Header does not contain a message type - please input a valid message header", "Error");
+            {  
                 valid = false;
             }
-
             if (header.Contains("s") && header.Contains("e") && header.Contains("t"))
-            {
-                MessageBox.Show("Header type is not the correct case - please input a valid message header", "Error");
+            {     
                 valid = false;
             }
 
@@ -153,24 +158,37 @@ namespace NapierBankingService.ApplicationLayer
         /// <param name="header"></param>
         /// <param name="subject"></param>
         /// <param name="type"></param>
-        public void ProcessMessage(string body, string header, char type, Dictionary<string, string> abbreviations)
+        public bool ProcessMessage(string body, string header, char type, Dictionary<string, string> abbreviations)
         {
             bool incidentDetected;
+            bool created = false;
             switch (type)
             {
                 case 'S':
 
-                    SMS sms = SMS.ProcessSMS(body, header, type, abbreviations);
-                    DataLayer.SaveData.SerializeSMS(sms);
-                    DataLayer.LoadData.DeserializeSMSs();
-
+                    try
+                    {
+                        CreateSMS(body, header, type, abbreviations);
+                        created = true;
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.WriteLine(e);
+                        created = false;
+                    }              
                     break;
                 case 'T':
-                    Tweet tweet = Tweet.ProcessTweet(body, header, type, abbreviations);
-                    DataLayer.SaveData.SerializeTweet(tweet);
-                    TweetList = DataLayer.LoadData.DeserializeTweets();
-                    HashtagDict = Tweet.CollateHashtags(TweetList);
-                    MentionsList = Tweet.CollateMentions(TweetList);
+                    try
+                    {
+                        CreateTweet(body, header, type, abbreviations);
+                        created = true;
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.WriteLine(e);
+                        created= false;
+                    }
+                  
                     break;
                 case 'E':
                     
@@ -178,21 +196,120 @@ namespace NapierBankingService.ApplicationLayer
                     
                     if (incidentDetected)
                     {
-                        SignificantIncident significantIncident = SignificantIncident.ProcessSignificantIncident(body, header, type);
-                        DataLayer.SaveData.SerializeSignificantIncident(significantIncident);
-                        SIRList = DataLayer.LoadData.DeserializeSignificantIncidents();
-                        SirStringList = SignificantIncident.CollateSignificantIncidents(SIRList);
+                        try
+                        {
+                            CreateSigIncident(body, header, type);
+                            created = true;
+                        } 
+                        catch (Exception e)
+                        {
+                            Debug.WriteLine(e);
+                            created=false;
+                        }
+                       
                     }
                     
                     if (!incidentDetected)
                     {
-                        Email email = Email.ProcessEmail(body, header, type);
-                        DataLayer.SaveData.SerializeEmail(email);
+                        try
+                        {
+                            CreateEmail(body, header, type);
+                            created=true;
+                        }
+                        catch (Exception e)
+                        {
+                            Debug.WriteLine(e);
+                            created = false;
+                        }
                     }
                     break;
             }
-            
+
+            return created;
         }
+
+
+
+        /// <summary>
+        /// This method creates an SMS
+        /// </summary>
+        /// <param name="body"></param>
+        /// <param name="header"></param>
+        /// <param name="type"></param>
+        /// <param name="abbreviations"></param>
+        /// <returns>
+        /// A complete SMS Message
+        /// </returns>
+        public SMS CreateSMS (string body, string header, char type, Dictionary<string, string> abbreviations)
+        {
+            SMS sms = SMS.ProcessSMS(body, header, type, abbreviations);
+            DataLayer.SaveData.SerializeSMS(sms);
+            DataLayer.LoadData.DeserializeSMSs();
+
+            return sms;
+        }
+
+        /// <summary>
+        /// This method creates a Tweet Message
+        /// </summary>
+        /// <param name="body"></param>
+        /// <param name="header"></param>
+        /// <param name="type"></param>
+        /// <param name="abbreviations"></param>
+        /// <returns>
+        /// A complete Tweet
+        /// </returns>
+        public Tweet CreateTweet (string body, string header, char type, Dictionary<string, string> abbreviations)
+        {
+            Tweet tweet = Tweet.ProcessTweet(body, header, type, abbreviations);
+            DataLayer.SaveData.SerializeTweet(tweet);
+            TweetList = DataLayer.LoadData.DeserializeTweets();
+            HashtagDict = Tweet.CollateHashtags(TweetList);
+            MentionsList = Tweet.CollateMentions(TweetList);
+
+            return tweet;
+        }
+
+
+        /// <summary>
+        /// This method creates a Significant Incident
+        /// </summary>
+        /// <param name="body"></param>
+        /// <param name="header"></param>
+        /// <param name="type"></param>
+        /// <returns>
+        /// A complete Significant Incident Message
+        /// </returns>
+        public SignificantIncident CreateSigIncident(string body, string header, char type)      
+        {
+            SignificantIncident significantIncident = SignificantIncident.ProcessSignificantIncident(body, header, type);
+            DataLayer.SaveData.SerializeSignificantIncident(significantIncident);
+            SIRList = DataLayer.LoadData.DeserializeSignificantIncidents();
+            SirStringList = SignificantIncident.CollateSignificantIncidents(SIRList);
+
+            return significantIncident;
+        }
+
+
+        /// <summary>
+        /// This methoid creates an Email
+        /// </summary>
+        /// <param name="body"></param>
+        /// <param name="header"></param>
+        /// <param name="type"></param>
+        /// <returns>
+        /// A complete Email Message
+        /// </returns>
+        public Email CreateEmail (string body, string header, char type)
+        {
+
+            Email email = Email.ProcessEmail(body, header, type);
+            DataLayer.SaveData.SerializeEmail(email);
+
+            return email;
+        }
+
+
 
 
         public Tuple<string, List<string>, string> EndSession(Dictionary<string, int> trendingList, List<string> mentions, Dictionary<string, string> sigs)
@@ -204,7 +321,7 @@ namespace NapierBankingService.ApplicationLayer
                 var trendingHashtags = trendingList.Select(kvp => string.Format("Hashtag: {0} ---- Times Used: {1}", kvp.Key, kvp.Value, kvp.Value));
                 var trending = string.Join(Environment.NewLine, trendingHashtags);
 
-                var sigIncidents = sigs.Select(kvp => string.Format("Incident Type: {0} ---- SortCode: {1}", kvp.Key, kvp.Value, kvp.Value));
+                var sigIncidents = sigs.Select(kvp => string.Format("Sort Code: {0} ---- Incident Type: {1}", kvp.Key, kvp.Value, kvp.Value));
                 var sigList = string.Join(Environment.NewLine, sigIncidents);
                 return new Tuple<string, List<string>, string>(trending, mentions, sigList);
             }

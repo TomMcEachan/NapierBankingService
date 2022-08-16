@@ -36,6 +36,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Assets\classdiagram.png" />
     <None Remove="Assets\Logo.png" />
     <None Remove="Assets\textwords.csv" />
   </ItemGroup>
@@ -59,6 +60,12 @@
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Assets\classdiagram.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>
