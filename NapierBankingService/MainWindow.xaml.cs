@@ -45,7 +45,8 @@ namespace NapierBankingService
 
                 if (!headerValid)
                 {
-                headerMessageBox.Clear();
+                   headerMessageBox.Clear();
+                    MessageBox.Show("This header is not valid. Please input a valid header that matches the requirements e.g, E123456789");
                 }
             }
               
