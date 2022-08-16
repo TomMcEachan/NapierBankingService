@@ -1,7 +1,7 @@
 ﻿namespace NapierUnitTests
 {
     [TestClass]
-    public class LoadTests
+    public class LoadDataTests
     {
         [TestMethod]
         public void VerifyGetDataFromFileWorks()
