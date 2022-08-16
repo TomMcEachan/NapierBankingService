@@ -87,7 +87,7 @@ namespace NapierBankingService
             {
                 string filePath = ofd.FileName;
                 string fileName = Path.GetFileName(filePath);
-                DataLayer.LoadData.GetDataFromFile(filePath, fileName, app);
+                DataLayer.LoadData.GetDataFromFile(filePath, app);
             }
         
         }
