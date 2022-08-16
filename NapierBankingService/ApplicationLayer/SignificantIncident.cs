@@ -17,10 +17,11 @@ namespace NapierBankingService.ApplicationLayer
         public string? IncidentType { get => _incidentType; set => _incidentType = value; }
         public string? SortCode { get => _sortCode; set => _sortCode = value; }
 
-        public SignificantIncident (string sortCode, string incidentType, string messageHeader, string messageBody, char messageType, string sender, string messageSubject, string date) : base (messageHeader, messageBody, messageType, sender,  messageSubject, date)
+        public SignificantIncident (string sortCode, string incidentType, string messageHeader, string messageBody, char messageType, string sender, string messageSubject, string date) : base (messageHeader, messageBody, messageType, sender, messageSubject, date)
         {
             IncidentType = incidentType;
             SortCode = sortCode; 
+
         }
 
         public SignificantIncident () { }
@@ -94,8 +95,13 @@ namespace NapierBankingService.ApplicationLayer
             {
                 IncidentType = "Cash Loss";
             }
+           
+            if (IncidentType != null)
+            {
+                return IncidentType;
+            }
 
-            return IncidentType;
+            return "No Type";
         }
 
 
@@ -117,7 +123,12 @@ namespace NapierBankingService.ApplicationLayer
                 SortCode = match.Value;               
             }
 
-            return SortCode;
+            if (SortCode != null)
+            {
+                return SortCode;
+            }
+
+            else return "empty";
 
         }
 
@@ -143,12 +154,14 @@ namespace NapierBankingService.ApplicationLayer
             SignificantIncident sig = new SignificantIncident();
 
             subject = sig.DetectSubjectLine(body);
+            
 
             incidentType = sig.DetectIncidentType(subject);
             sortCode = sig.DetectSortCode(subject);
             emailAddress = sig.DetectEmailAddress(body); //detects the email address from the body
             dateString = sig.DetectDate(subject); //detects the date from the subject line
             QuarantineList = sig.DetectURL(body);
+            body = sig.DetectBodyText(body);
             body = sig.QuarantineURL(body, QuarantineList);
 
             SignificantIncident newMessage = new SignificantIncident(sortCode, incidentType, header, body, type, emailAddress, subject, dateString);

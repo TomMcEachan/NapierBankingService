@@ -13,16 +13,19 @@ namespace NapierBankingService.ApplicationLayer
         private string? emailAddress;
         private string? subject;
 
+
         protected string? MessageSubject { get => messageSubject; set => messageSubject = value; }
         public string? Subject { get => subject; set => subject = value; }
         public string? DateString { get => dateString; set => dateString = value; }
+        public string? EmailAddress { get => emailAddress; set => emailAddress = value; }
 
 
         /* Email Constructor */
-        public Email(string messageHeader, string messageBody, char messageType, string subject, string sender, string date) : base(messageHeader, messageBody, messageType, sender)
+        public Email(string messageHeader, string messageBody, char messageType, string sender, string subject, string date) : base(messageHeader, messageBody, messageType, sender)
         {
             Subject = subject;
             DateString = date;
+            EmailAddress = sender;
         }
 
         /* Empty Email Constructor */
@@ -76,12 +79,12 @@ namespace NapierBankingService.ApplicationLayer
 
             foreach (Match match in matches)
             {
-                emailAddress = match.Value;
+                EmailAddress = match.Value;
             }
 
-            if (emailAddress != null)
+            if (EmailAddress != null)
             {
-                return emailAddress;
+                return EmailAddress;
             }
 
             else
