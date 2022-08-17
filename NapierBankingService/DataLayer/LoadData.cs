@@ -212,7 +212,7 @@ namespace NapierBankingService.DataLayer
                 foreach (KeyValuePair<string, string> kvp in data.Skip(1))
                 {
                     output = "HEADER: " + kvp.Key + "\n\nMESSAGE: " + kvp.Value;
-                    MessageBox.Show(output);
+                    MessageBox.Show(output, "UNSANITISED MESAAGES");
                 }
               
 

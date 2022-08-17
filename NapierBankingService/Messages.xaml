@@ -8,26 +8,27 @@
         Title="Messages" Height="450" Width="800">
     <Grid>
         <TabControl x:Name="Tab_Container" Margin="0,36,0,-36">
-            <TabItem x:Name="Significant_Incidents_Tab" Header="Significant Incidents">
+            <TabItem x:Name="Significant_Incidents_Tab" Header="Significant Incidents" ScrollViewer.HorizontalScrollBarVisibility="Auto">
                 <Grid Background="#FFE5E5E5">
-                    <TextBox x:Name="SigIncidentsText" HorizontalAlignment="Center" Margin="0,18,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="774" Height="378" ScrollViewer.CanContentScroll="True" HorizontalScrollBarVisibility="Auto" IsReadOnly="True"/>
+                    <TextBox x:Name="SigIncidentsText" HorizontalAlignment="Center" Margin="0,18,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="774" Height="276" HorizontalScrollBarVisibility="Visible" IsReadOnly="True" ScrollViewer.CanContentScroll="True" VerticalScrollBarVisibility="Visible"/>
                 </Grid>
             </TabItem>
             <TabItem x:Name="Emails_Tab" Header="Emails">
                 <Grid Background="#FFE5E5E5">
-                    <TextBox x:Name="Emails_Text_Box" HorizontalAlignment="Center" Margin="0,18,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="774" Height="378" ScrollViewer.CanContentScroll="True" HorizontalScrollBarVisibility="Auto" IsReadOnly="True"/>
+                    <TextBox x:Name="Emails_Text_Box" HorizontalAlignment="Center" Margin="0,18,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="774" Height="276" ScrollViewer.CanContentScroll="True" HorizontalScrollBarVisibility="Visible" IsReadOnly="True" VerticalScrollBarVisibility="Visible"/>
                 </Grid>
             </TabItem>
             <TabItem x:Name="Tweets_Tab" Header="Tweets">
                 <Grid Background="#FFE5E5E5">
-                    <TextBox x:Name="Tweets_Text_Box" HorizontalAlignment="Center" Margin="0,18,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="774" Height="378" ScrollViewer.CanContentScroll="True" HorizontalScrollBarVisibility="Auto" IsReadOnly="True"/>
+                    <TextBox x:Name="Tweets_Text_Box" HorizontalAlignment="Center" Margin="0,18,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="774" Height="276" ScrollViewer.CanContentScroll="True" HorizontalScrollBarVisibility="Visible" IsReadOnly="True" VerticalScrollBarVisibility="Visible"/>
                 </Grid>
             </TabItem>
             <TabItem x:Name="SMS_Tab" Header="SMSs">
                 <Grid Background="#FFE5E5E5">
-                    <TextBox x:Name="SMS_Text_Box" HorizontalAlignment="Center" Margin="0,18,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="774" Height="378" ScrollViewer.CanContentScroll="True" HorizontalScrollBarVisibility="Auto" IsReadOnly="True"/>
+                    <TextBox x:Name="SMS_Text_Box" HorizontalAlignment="Center" Margin="0,18,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="774" Height="276" ScrollViewer.CanContentScroll="True" HorizontalScrollBarVisibility="Visible" IsReadOnly="True" VerticalScrollBarVisibility="Visible"/>
                 </Grid>
             </TabItem>
         </TabControl>
+        <Button Content="Return to Input&#xD;&#xA;" HorizontalAlignment="Left" Margin="602,16,0,0" VerticalAlignment="Top" Width="126" Height="20" Background="#FFE6223F" BorderBrush="#FFAF2337" Foreground="White" FontFamily="Arial" FontWeight="Bold" Click="Button_Click"/>
     </Grid>
 </Window>
