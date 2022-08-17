@@ -11,9 +11,11 @@ namespace NapierBankingService.ApplicationLayer
     {
         private List<Hashtag>? _hashTags;
         private List<Mention>? _mentions;
+        
 
         public List<Hashtag>? HashTags { get => _hashTags; set => _hashTags = value; }
         public List<Mention>? Mentions { get => _mentions; set => _mentions = value; }
+        
 
         public Tweet(string messageHeader, string messageBody, char messageType, string sender, List<Hashtag> hashTags, List<Mention> mentions) : base(messageHeader, messageBody, messageType, sender)
         {

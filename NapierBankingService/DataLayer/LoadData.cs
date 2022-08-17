@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Windows.Forms;
 
 namespace NapierBankingService.DataLayer
 {
@@ -185,7 +186,7 @@ namespace NapierBankingService.DataLayer
             Dictionary<string, string> data = new Dictionary<string, string>();
             string header;
             string body;
-
+            string output;
 
             using (var stream = new StreamReader(filepath))
             {
@@ -198,7 +199,7 @@ namespace NapierBankingService.DataLayer
                 }
             }
 
-           foreach (KeyValuePair<string, string> kvp in data)
+           foreach (KeyValuePair<string, string> kvp in data.Skip(1))
            {
               header = kvp.Key;
               body = kvp.Value;
@@ -207,14 +208,24 @@ namespace NapierBankingService.DataLayer
            }
 
             if (data != null)
-            {
+            {   
+                foreach (KeyValuePair<string, string> kvp in data.Skip(1))
+                {
+                    output = "HEADER: " + kvp.Key + "\n\nMESSAGE: " + kvp.Value;
+                    MessageBox.Show(output);
+                }
+              
+
                 return true;
             }
             else
             {
+                MessageBox.Show("No Data Found");
                 return false;
             }
-          
+
+            
+            
         }
 
         

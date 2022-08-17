@@ -94,5 +94,12 @@ namespace NapierBankingService
             }
         
         }
+
+        private void View_Messages_Button_Click(object sender, RoutedEventArgs e)
+        {
+            Messages Messages = new Messages(app);
+            this.Close();
+            Messages.Show();
+        }
     }
 }
