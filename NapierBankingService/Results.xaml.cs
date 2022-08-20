@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 
 namespace NapierBankingService
@@ -7,6 +8,8 @@ namespace NapierBankingService
     /// <summary>
     /// Interaction logic for Results.xaml
     /// </summary>
+    
+    [ExcludeFromCodeCoverage]
     public partial class Results : Window
     {
         public Results(ApplicationLayer.App app)
@@ -30,6 +33,13 @@ namespace NapierBankingService
             
         }
 
-       
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            MainWindow window = new MainWindow();
+            this.Close();
+            window.Show();
+
+
+        }
     }
 }

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -11,6 +12,8 @@ namespace NapierBankingService
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+
+    [ExcludeFromCodeCoverage]
     public partial class MainWindow : Window
     {
         ApplicationLayer.App app = new ApplicationLayer.App();
@@ -61,6 +64,7 @@ namespace NapierBankingService
             if (headerMessageBox.Text.Contains("E"))
             {
                 messageBody.MaxLength = app.EmailLimit;
+                messageBody.Text = "From:\nSubject:\nBody:\n";
              
             }
 
@@ -87,9 +91,16 @@ namespace NapierBankingService
             {
                 string filePath = ofd.FileName;
                 string fileName = Path.GetFileName(filePath);
-                DataLayer.LoadData.GetDataFromFile(filePath, fileName, app);
+                DataLayer.LoadData.GetDataFromFile(filePath, app);
             }
         
+        }
+
+        private void View_Messages_Button_Click(object sender, RoutedEventArgs e)
+        {
+            Messages Messages = new Messages(app);
+            this.Close();
+            Messages.Show();
         }
     }
 }

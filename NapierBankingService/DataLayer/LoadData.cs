@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Windows.Forms;
 
 namespace NapierBankingService.DataLayer
 {
@@ -180,9 +181,12 @@ namespace NapierBankingService.DataLayer
         }
 
 
-        public static void GetDataFromFile(string filepath, string fileName, ApplicationLayer.App app)
+        public static bool GetDataFromFile(string filepath, ApplicationLayer.App app)
         {
             Dictionary<string, string> data = new Dictionary<string, string>();
+            string header;
+            string body;
+            string output;
 
             using (var stream = new StreamReader(filepath))
             {
@@ -195,18 +199,32 @@ namespace NapierBankingService.DataLayer
                 }
             }
 
-
-           foreach (KeyValuePair<string, string> kvp in data)
+           foreach (KeyValuePair<string, string> kvp in data.Skip(1))
            {
-              string header = kvp.Key;
-              string body = kvp.Value;
+              header = kvp.Key;
+              body = kvp.Value;
 
               app.ProcessSubmission(header, body);
            }
 
+            if (data != null)
+            {   
+                foreach (KeyValuePair<string, string> kvp in data.Skip(1))
+                {
+                    output = "HEADER: " + kvp.Key + "\n\nMESSAGE: " + kvp.Value;
+                    MessageBox.Show(output, "UNSANITISED MESAAGES");
+                }
+              
 
-          
+                return true;
+            }
+            else
+            {
+                MessageBox.Show("No Data Found");
+                return false;
+            }
 
+            
             
         }
 
