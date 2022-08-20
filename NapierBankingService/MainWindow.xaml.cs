@@ -64,6 +64,7 @@ namespace NapierBankingService
             if (headerMessageBox.Text.Contains("E"))
             {
                 messageBody.MaxLength = app.EmailLimit;
+                messageBody.Text = "From:\nSubject:\nBody:\n";
              
             }
 

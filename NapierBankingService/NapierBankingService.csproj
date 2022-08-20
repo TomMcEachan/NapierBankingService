@@ -7,8 +7,8 @@
     <UseWPF>true</UseWPF>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <UseWindowsForms>True</UseWindowsForms>
-    <ApplicationIcon>favicon.ico</ApplicationIcon>
     <PackageIcon>Logo.png</PackageIcon>
+    <ApplicationIcon>Assets\favicon.ico</ApplicationIcon>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
@@ -40,11 +40,12 @@
     <None Remove="Assets\Logo.png" />
     <None Remove="Assets\Test.csv" />
     <None Remove="Assets\textwords.csv" />
+    <None Remove="Logo.png" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Assets\Logo.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <Content Include="Assets\favicon.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Test.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -52,14 +53,9 @@
     <Content Include="Assets\textwords.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="favicon.ico" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="C:\Users\tomam\Downloads\Logo.png">
-      <Pack>True</Pack>
-      <PackagePath>\</PackagePath>
-    </None>
+    <Content Include="favicon.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
@@ -72,4 +68,18 @@
     </Content>
   </ItemGroup>
 
+  <ItemGroup>
+    <Resource Include="Assets\Logo.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Assets\favicon.ico">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 </Project>
