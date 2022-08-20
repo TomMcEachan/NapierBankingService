@@ -14,6 +14,8 @@ namespace NapierBankingService.ApplicationLayer
         private List<string>? mentionsList;
         private Dictionary<string, string>? abbreviations;
         private List<Tweet>? tweetList;
+        private List<Email>? emailList = new List<Email>();
+        private List<SMS>? smsList = new List<SMS>();
         private char type;
         private int smsTwitterLimit = 140;
         private int emailLimit = 1028;
@@ -26,6 +28,8 @@ namespace NapierBankingService.ApplicationLayer
         public List<string>? MentionsList { get => mentionsList; set => mentionsList = value; }
         public List<SignificantIncident>? SIRList { get => sirList; set => sirList = value; }
         public Dictionary<string, string>? SirStringList { get => sirStringList; set => sirStringList = value; }
+        public List<Email>? EmailList { get => emailList; set => emailList = value; }
+        public List<SMS>? SmsList { get => smsList; set => smsList = value; }
 
 
 
@@ -168,7 +172,8 @@ namespace NapierBankingService.ApplicationLayer
 
                     try
                     {
-                        CreateSMS(body, header, type, abbreviations);
+                        SMS s = CreateSMS(body, header, type, abbreviations);
+                        SmsList.Add(s);
                         created = true;
                     }
                     catch (Exception e)
@@ -180,7 +185,8 @@ namespace NapierBankingService.ApplicationLayer
                 case 'T':
                     try
                     {
-                        CreateTweet(body, header, type, abbreviations);
+                        Tweet t = CreateTweet(body, header, type, abbreviations);
+                        TweetList.Add(t);
                         created = true;
                     }
                     catch (Exception e)
@@ -198,7 +204,8 @@ namespace NapierBankingService.ApplicationLayer
                     {
                         try
                         {
-                            CreateSigIncident(body, header, type);
+                            SignificantIncident sig = CreateSigIncident(body, header, type);
+                            SIRList.Add(sig);
                             created = true;
                         } 
                         catch (Exception e)
@@ -213,7 +220,8 @@ namespace NapierBankingService.ApplicationLayer
                     {
                         try
                         {
-                            CreateEmail(body, header, type);
+                            Email em = CreateEmail(body, header, type);
+                            EmailList.Add(em);
                             created=true;
                         }
                         catch (Exception e)
@@ -315,7 +323,7 @@ namespace NapierBankingService.ApplicationLayer
         public Tuple<string, List<string>, string> EndSession(Dictionary<string, int> trendingList, List<string> mentions, Dictionary<string, string> sigs)
         {
              
-            //Creates a string to be printed in the end of session window for the trending hashtags
+            
             if(trendingList != null)
             {
                 var trendingHashtags = trendingList.Select(kvp => string.Format("Hashtag: {0} ---- Times Used: {1}", kvp.Key, kvp.Value, kvp.Value));
