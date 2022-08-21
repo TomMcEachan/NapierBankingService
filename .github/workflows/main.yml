@@ -30,7 +30,4 @@ jobs:
         
       - name: Build the Soloution
         run: msbuild NapierBankingService.sln
-        
-      - name: Run Tests
-        uses: EasyDesk/action-dotnet-test@v1
-        
+
