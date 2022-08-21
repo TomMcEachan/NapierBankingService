@@ -8,7 +8,7 @@
         {
             //Arrange
             Email email = new Email();
-            string date = "10/09/1997";
+            string date = "Hello everyyone 10/09/1997";
             
             //Act
             string expectedResult = "10/09/1997";
