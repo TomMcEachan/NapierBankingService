@@ -31,3 +31,13 @@ jobs:
       - name: Build the Soloution
         run: msbuild NapierBankingService.sln
 
+      - name: Run Unit Tests
+        uses: zyborg/dotnet-tests-report@v1
+        with: 
+          project_path: NapierUnitTests/NapierUnitTests.cspproj
+          report_name: unit_tests_report
+          report_title: Unit Tests Report
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          gist_name: unit_test_report.md
+          gist_badge_label: 'Napier Bank: %Counters_passed%/%Counters_total%'
+          gist_token: ${{ secrets.GIST_TOKEN }}
