@@ -11,7 +11,7 @@ on:
   
 jobs:
   # This workflow contains a single job called "build"
-  build:
+  build-and-test:
     # The type of runner that the job will run on
     runs-on: windows-latest
 
@@ -30,3 +30,8 @@ jobs:
         
       - name: Build the Soloution
         run: msbuild NapierBankingService.sln
+        
+      - name: Test
+        run: dotnet test --no-restore --verbosity normal
+
+      
